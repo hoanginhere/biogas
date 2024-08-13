@@ -1,0 +1,134 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block mainContent %}
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Power Data Viewer</h6>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        <div class="row">
+            <form method="POST">
+                {% csrf_token %}
+                <label for="id_MachineID"> Machine id </label>
+                {{ form_query.MachineID }}
+                <a href="#" class="btn btn-danger btn-icon-split" id="id_verify">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Check generator</span>
+                </a>
+                <br>
+                <label for="id_TimeStart"> From: </label>
+                {{ form_query.TimeStart }}
+                <label for="id_TimeEnd"> To: </label>
+                {{ form_query.TimeEnd }}
+                <input type="submit">
+            </form>
+        </div>
+        <div class="row">
+            <!-- <div class="chart-area" style="width:100vw;height:40vh"> -->
+                <canvas width="1108" height="640" id="barchart_data"></canvas>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<script>
+    {% if status == "success" %}
+        // alert("hi")
+        let time_tick = [],datata=[];
+        let mes = JSON.stringify(
+            {
+                id:"{{id}}",
+                ts: {{ts}} ,
+                te: {{te}},
+            }
+        );
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/interval/`);
+        chatSocket.onopen = (event) => {
+        chatSocket.send(mes);
+    };
+        chatSocket.onmessage=function(e)
+        {
+            data = JSON.parse(e.data);
+            // console.log(data);
+            let i = 0;
+            while (i < data.length) {
+                time_tick.push(Date(data[i].time * 1000));
+                datata.push(data[i].value);
+                i++
+            }
+            // console.log(time_tick);
+            // console.log(datata)
+            myChart3= new Chart(
+            document.getElementById('barchart_data'),
+            {
+            type: 'line',
+            options: {
+                animation: false,
+                plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: false
+                },
+                datalabels: { display: false, }
+
+                // scales:{
+                //     xAxes:[{display:false}]
+                // }
+                }
+            },
+            data: {
+                labels: time_tick,
+                datasets: [
+                {
+                    label: 'Power Data',
+                    data: datata,
+                    borderColor: [
+                    'rgb(75, 90, 192)'
+                    ],
+                    backgroundColor: 'rgb(75, 90, 192)',
+                    borderWidth: 1,
+                    pointRadius:1,
+                    tension: 0.2
+                    
+                }
+                ]
+            }
+            }
+        );
+        }
+    {% endif %}
+    id_verify.addEventListener("click",(event) => {
+        id_machine= document.getElementById("id_MachineID").value;
+        {% if user.biogasmachinemoderator.Active == True %}
+        {% for machines in user.biogasmachinemoderator.Machines.all %}
+        if (id_machine=="{{machines.MachineID}}")
+        {
+            // alert("True");
+            document.getElementById("id_verify").setAttribute("class","btn btn-success btn-icon-split"); 
+            return 0;
+        }
+        {% endfor %}
+        alert("You don't have this machine");
+        {% else %}
+        if (id_machine=="{{user.biogasmachineuser.Machines.MachineID}}")
+        {
+            // alert("True");
+            document.getElementById("id_verify").setAttribute("class","btn btn-success btn-icon-split"); 
+        }
+        else
+        {
+            alert("You don't have this machine")
+            document.getElementById("id_verify").setAttribute("class","btn btn-danger btn-icon-split");
+        }
+        {% endif %}
+    });
+</script>
+
+{% endblock %}

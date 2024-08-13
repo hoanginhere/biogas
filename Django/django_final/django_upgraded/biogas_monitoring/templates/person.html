@@ -1,0 +1,564 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block mainContent %}
+<script>
+    function addData(chart, data) {
+    // chart.data.labels.push(label);
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+    });
+    chart.update();
+}    
+</script>
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"><b>Monitoring Parameters</b></h1>
+    </div>
+    
+    {% if usertype == "USER" %}
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="row">
+                <div class= 'col'><p><b>User type:</b> {{usertype}}</p></div>
+                <div class= 'col'><p><b>Machine name:</b> {{machine_name}}</p></div>
+                <div class= 'col'><p><b>ID:</b> {{user.biogasmachineuser.Machines.MachineID}}</p></div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3" style="">
+        <div class="col"style="">
+            <div class="card border-left-primary shadow" style="height:585px">
+                <div class="card-body" style="">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="my-0 py-0 font-weight-bold text-primary">Voltage 3 phases</h6>
+                    </div>
+                    <canvas id="barsintown">
+                    </canvas>
+                    <canvas id="barsintown1">
+                    </canvas>
+                    <canvas id="barsintown2">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col"style="">
+            <div class="card border-left-primary shadow" style="height:585px">
+                <div class="card-body" style="border:solid blue">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Current 3 phases</h6>
+                    </div>
+                    <canvas id="voltage3">
+                    </canvas> 
+                </div>
+            </div>
+        </div>
+        <div class="col"style="">
+            <div class="card border-left-primary shadow" style="height:585px">
+                <div class="card-body" style="border:solid blue">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Custom parameters</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn btn-success btn-circle btn-lg" style="margin-top:5px" id="add_info">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                        <div class="col my-3" >
+                            <form style="width:inherit">
+                                <input type="text" id="param" style="width:inherit"></input>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table class="table" id="table1">
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row py-3">
+        <div class="col">
+            <div class="card border-left-primary shadow">
+                <div class="card-body" style=";width:inherit;height:55vh">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="my-0 py-0 font-weight-bold text-primary">Operation</h6>
+                    </div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Status: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}status"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Date:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}daytb"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Start time:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}timetb"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Duration of operation:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}op"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-left-primary shadow">
+                <div class="card-body" style=";width:inherit;height:55vh">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="my-0 py-0 font-weight-bold text-primary">Electrical</h6>
+                    </div>
+                    <table class="table">
+                        <tbody>
+                            <!-- <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Energy: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}eleewh"></div></td>
+                            </tr> -->
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Power:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}elepwt"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Voltage:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}elevna"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Current: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}eleiav"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Speed: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}eles"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Frequency: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}elef"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card border-left-primary shadow">
+                <div class="card-body" style=";width:inherit;height:55vh">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="my-0 py-0 font-weight-bold text-primary">Environment</h6>
+                    </div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">WATER TEMPERATURE: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envtw"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">OIL PRESSURE: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envpo"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">OXYGEN: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envo2"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">H2S: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envh2s"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script>
+        param_array=[];
+        stoptime=0;
+        stoptime_old=0;
+        var counter=0;
+        const info_button = document.getElementById("add_info");
+        info_button.addEventListener("click",(event)=>{
+
+            // alert(document.getElementById("param").value);
+            // <tr>
+            //                         <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1"></div></td>
+            //                         <td><div class="h5 mb-0 font-weight-bold text-gray-800"></div></td>
+            //                     </tr>
+            
+            table_1=document.getElementById("table1");
+            row_table = document.createElement("tr");
+            cell1= document.createElement("td");
+            cell2= document.createElement("td");
+            div1=document.createElement("div");
+            div2=document.createElement("div");
+            div1.class = "text-ms font-weight-bold text-primary text-uppercase mb-1";
+            param_array.push(document.getElementById("param").value);
+            div1.innerHTML = document.getElementById("param").value + ":";
+            div2.class = "h5 mb-0 font-weight-bold text-gray-800";
+            div2.id = document.getElementById("param").value;
+            table_1.appendChild(row_table);
+            row_table.appendChild(cell1);
+            row_table.appendChild(cell2);
+            cell1.appendChild(div1);
+            cell2.appendChild(div2);
+        })
+        myChart3= new Chart(
+            document.getElementById('barsintown'),
+            {
+            type: 'line',
+            options: {
+                animation: false,
+                plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: false
+                }
+                }
+            },
+            data: {
+                labels: [t0,t1,t2,t3,t4,t5],
+                datasets: [
+                {
+                    label: 'Voltage Phase A To Neutral',
+                    data: [0,1,2,3,4,5,6],
+                    borderColor: [
+                    'rgb(75, 90, 192)'
+                    ],
+                    backgroundColor: 'rgb(75, 90, 192)',
+                    borderWidth:0.7,
+                    pointRadius:0.3,
+                    tension: 0.2
+                    
+                }
+                ]
+            }
+            }
+        );
+        myChart5= new Chart(
+            document.getElementById('barsintown1'),
+            {
+            type: 'line',
+            options: {
+                animation: false,
+                plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: false
+                }
+                }
+            },
+            data: {
+                labels: [t0,t1,t2,t3,t4,t5],
+                datasets: [
+                {
+                    label: 'Voltage Phase B To Neutral',
+                    data: [0,1,2,3,4,5,6],
+                    borderColor: [
+                    'rgb(75, 192, 192)'
+                    ],
+                    backgroundColor: 'rgb(75, 192, 192)',
+                    borderWidth:0.7,
+                    pointRadius:0.3,
+                    tension: 0.2
+                    
+                }
+                ]
+            }
+            }
+        );
+        myChart6= new Chart(
+            document.getElementById('barsintown2'),
+            {
+            type: 'line',
+            options: {
+                animation: false,
+                plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: false
+                }
+                }
+            },
+            data: {
+                labels: [t0,t1,t2,t3,t4,t5],
+                datasets: [
+                {
+                    label: 'Voltage Phase C To Neutral',
+                    data: [0,1,2,3,4,5,6],
+                    borderColor: [
+                    'red'
+                    ],
+                    backgroundColor: 'red',
+                    borderWidth:0.7,
+                    pointRadius:0.3,
+                    tension: 0.2
+                    
+                }
+                ]
+            }
+            }
+        );
+
+        myChart4= new Chart(
+            document.getElementById('voltage3'),
+            {
+            type: 'pie',
+            plugins:[ChartDataLabels],
+            options: {
+                animation: true,
+                plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: false
+                },
+                datalabels: {
+                    color: '#000000'
+                }
+                }
+            }
+            ,
+            data: {
+                labels: ['PhaseA','PhaseB','PhaseC'],
+                datasets: [
+                {
+                    label: 'Voltage by Phase',
+                    data: [0,0,0],
+                    backgroundColor: [
+                '#00FF00',
+                '#0000FF',
+                '#FFFF00'
+                ]
+                }
+                ]
+                
+            }
+            }
+        );
+        var x0=0,x1=0,x2=0,x3=0,x4=0,x5=0,t0=0,t1=0,t2=0,t3=0,t4=0,t5=0,y1=0,y2=0,y3=0;
+        var x01=0,x11=0,x21=0,x31=0,x41=0,x51=0
+        var x02=0,x12=0,x22=0,x32=0,x42=0,x52=0
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/app/common`);
+        chatSocket.onopen = (event) => {
+        chatSocket.send("initiate");
+        };
+        chatSocket.onmessage=function(e)
+        {
+        let data=JSON.parse(e.data);
+        // console.log(data);
+        x0=x1;
+        x1=x2;
+        x2=x3;
+        x3=x4;
+        x4=x5;
+        x01=x11;
+        x11=x21;
+        x21=x31;
+        x31=x41;
+        x41=x51;
+        x02=x12;
+        x12=x22;
+        x22=x32;
+        x32=x42;
+        x42=x52;
+        t0=t1;
+        t1=t2;
+        t2=t3;
+        t3=t4;
+        t4=t5;
+
+    try{x5=data["uan_ele"].value;}catch(e){}
+    try{x51=data["ubn_ele"].value;}catch(e){}
+    try{x52=data["ucn_ele"].value;}catch(e){}
+    t5=new Date(data['time']).toLocaleString();
+    stoptime=data["time"].value
+    if(stoptime==stoptime_old)
+    {
+        counter=counter+1;
+    }
+    else{counter=0}
+    if (counter>20)
+    {
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}status").innerHTML = "Stopped";}catch(e){}
+    }
+    else
+    {
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}status").innerHTML = "Running";}catch(e){}
+    }
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}eleiav").innerHTML = (data["iAvg_ele"].value.toFixed(2))}catch(e){}
+
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}eles").innerHTML = (data["speed_ope"].value.toFixed(2))}catch(e){}
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}elef").innerHTML = (data["frq_ele"].value.toFixed(2))}catch(e){}
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}elepwt").innerHTML = (data["ptotal_ele"].value.toFixed(2))}catch(e){}
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}elevna").innerHTML = (data["ulnAvg_ele"].value.toFixed(2))}catch(e){}
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}eleewh").innerHTML = (data["ptotal_ele"].value.toFixed(2))}catch(e){}
+
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envtw").innerHTML = Math.fround(data["temperature_env"].value)}catch(e){}
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envo2").innerHTML = Math.fround(data["temperature_env"].value)}catch(e){}
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envh2s").innerHTML = Math.fround(data["temperature_env"].value)}catch(e){}
+    try{document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envpo").innerHTML = Math.fround(data["temperature_env"].value)}catch(e){}
+
+    for(i=0;i<param_array.length;i++)
+    {
+        try{document.getElementById(param_array[i]).innerHTML = Math.fround(data[param_array[i]].value.toFixed(2))}catch(e){}
+    }
+    const labels3 = [];
+    data1=[x0,x1,x2,x3,x4,x5];
+    myChart3.data.datasets[0].data = data1;
+    myChart3.data.labels = [t0,t1,t2,t3,t4,t5]
+    myChart3.update();
+    data2=[x01,x11,x21,x31,x41,x51];
+    myChart5.data.datasets[0].data = data2;
+    myChart5.data.labels = [t0,t1,t2,t3,t4,t5]
+    myChart5.update();
+    data3=[x02,x12,x22,x32,x42,x52];
+    myChart6.data.datasets[0].data = data3;
+    myChart6.data.labels = [t0,t1,t2,t3,t4,t5]
+    myChart6.update();
+    try{
+    y1=data['ia_ele'].value;
+    y2=data['ib_ele'].value;
+    y3=data['ic_ele'].value
+    myChart4.data.datasets[0].data = [y1.toFixed(2),y2.toFixed(2),y3.toFixed(2)];
+    }
+
+    catch (error) {
+    console.log(error);
+    myChart4.data.datasets[0].data = [y1.toFixed(2),y2.toFixed(2),y3.toFixed(2)];
+    }
+    myChart4.update();
+    stoptime_old=stoptime;
+    // sleep(500)
+    chatSocket.send('continue');
+    }
+    </script>
+
+    {% elif usertype == "MODERATOR" %}
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class= 'col'><p><b>User type:</b> {{usertype}}</p></div>
+                </div>
+            </div>
+        </div>
+        {% for machine in user.biogasmachinemoderator.Machines.all %}
+        {% if forloop.counter0 == 0 %}
+            <div class="row no-gutters" style="">
+        {% elif forloop.counter0|divisibleby:4 and forloop.counter0 != 0 %}
+            </div>
+            <div class="row no-gutters" style="">
+        {% endif %}
+        <div class="col">
+            <div class="card border-left-primary shadow">
+                <div class="card-body">
+                    <div class="card-header">
+                        {{machine}}
+                    </div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Status: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}status"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Start time:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}timetb"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Duration of operation:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}op"></div></td>
+                            </tr>
+                            <!-- <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Energy: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}eleewh"></div></td>
+                            </tr> -->
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Power:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}elepwt"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Voltage:</div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}elevna"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Current: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}eleiav"></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Frequency: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}elef"></div></td>
+                            </tr>
+                            <!-- <tr>
+                                <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Vibration: </div></td>
+                                <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}envtw"></div></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        <script> 
+            var x0=0,x1=0,x2=0,x3=0,x4=0,x5=0,t0=0,t1=0,t2=0,t3=0,t4=0,t5=0,y1=0,y2=0,y3=0;       
+            const chatSocket = new WebSocket(`ws://${window.location.host}/ws/moderator`);
+            chatSocket.onopen = (event) => {
+            chatSocket.send("initiate");
+            };
+            chatSocket.onmessage=function(e)
+            {
+            let data=JSON.parse(e.data);
+            // console.log(data);
+
+        {% for machine1 in  user.biogasmachinemoderator.Machines.all %}
+
+        try{x5=data.{{machine1.MachineID}}["uan_ele"].value}catch(e){}
+        // console.log(data.{{machine1.MachineID}}['time'])
+        t5=new Date(data.{{machine1.MachineID}}['time']).toLocaleString();
+        try{document.getElementById("{{ machine1.MachineID }}status").innerHTML = "Running"}catch(e){}
+        try{document.getElementById("{{ machine1.MachineID }}eleiav").innerHTML = data.{{machine1.MachineID}}["iAvg_ele"].value.toFixed(2);}catch(e){}
+        // try{document.getElementById("{{ machine1.MachineID }}eles").innerHTML = Math.fround(data.{{machine1.MachineID}}["g01eles"].value)
+        try{document.getElementById("{{ machine1.MachineID }}elef").innerHTML = data.{{machine1.MachineID}}["frq_ele"].value.toFixed(2);}catch(e){}
+        try{document.getElementById("{{ machine1.MachineID }}elepwt").innerHTML = data.{{machine1.MachineID}}["ptotal_ele"].value.toFixed(2);}catch(e){}
+        try{document.getElementById("{{ machine1.MachineID }}elevna").innerHTML = data.{{machine1.MachineID}}["ulnAvg_ele"].value.toFixed(2);}catch(e){}
+        try{document.getElementById("{{ machine1.MachineID }}eleewh").innerHTML = data.{{machine1.MachineID}}["ptotal_ele"].value.toFixed(2);}catch(e){}
+        // try{document.getElementById("{{ machine1.MachineID }}eleewh").innerHTML = data["g01eleiav"]
+        try{document.getElementById("{{ machine1.MachineID }}envtw").innerHTML = data.{{machine1.MachineID}}["temperature_env"].value.toFixed(2);}catch(e){}
+        try{document.getElementById("{{ machine1.MachineID }}envo2").innerHTML = data.{{machine1.MachineID}}["temperature_env"].value.toFixed(2);}catch(e){}
+        try{document.getElementById("{{ machine1.MachineID }}envh2s").innerHTML =data.{{machine1.MachineID}}["temperature_env"].value.toFixed(2);}catch(e){}
+        try{document.getElementById("{{ machine1.MachineID }}envpo").innerHTML = data.{{machine1.MachineID}}["temperature_env"].value.toFixed(2);}catch(e){}
+        {% endfor %}
+        
+        // sleep(500)
+        chatSocket.send('continue');
+        }
+        </script>
+    {% endif %}
+
+    
+
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+
+{% block chartSourceJs %}
+    <script src="{% static '/js/personChart.js' %}"></script>
+{% endblock %}

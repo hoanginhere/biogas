@@ -1,0 +1,561 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block mainContent %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Bảng giám sát</h1>
+    </div>
+    <!-- End of Page Heading -->
+
+    <!-- Content Row -->
+    <div class="row row1">
+        <!-- Thông số điện -->
+        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+            <h1 class="h3 mb-0 text-gray-800 align-center">Thông số điện</h1>
+
+            <div class="row no-gutters align-items-center">
+                <!-- table1 -->
+                <div class="col  mr-2">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Cảm biến</th>
+                        <th scope="col">Giá trị</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp hiệu dụng pha A: </div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}eleva"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp hiệu dụng pha B:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}elevb"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp hiệu dụng pha C:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}elevc"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp pha hiệu dụng trung bình:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}elevna"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp hiệu dụng dây AB:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elevab"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp hiệu dụng dây BC:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elevbc"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp hiệu dụng dây CA:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elevca"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Điện áp dây hiệu dụng trung bình:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elevla"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Dòng điện hiệu dụng pha A:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eleia"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Dòng điện hiệu dụng pha B:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eleib"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Dòng điện hiệu dụng pha C:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eleic"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Dòng hiệu dụng trung bình:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eleiav"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tốc độ:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eles"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tần số:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elef"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng thời gian chạy:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eletop"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+            <h1 class="h3 mb-0 text-gray-800 align-center">Thông số điện</h1>
+
+            <div class="row no-gutters align-items-center">
+                <!-- table2 -->
+                <div class="col  mr-2">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Cảm biến</th>
+                        <th scope="col">Giá trị</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Công suất pha A:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepwa"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Công suất pha B:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepwb"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Công suất pha C:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepwc"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng công suất:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepwt"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Hệ số công suất pha A:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepfa"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Hệ số công suất pha B:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepfb"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Hệ số công suất pha C:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepfc"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Hệ số công suất trung bình:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elepft"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng điện năng:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eleewh"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng năng lượng biểu kiến:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}eleevah"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">THD_Van/Vab:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elethdva"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">THD_Vbn/Vbc:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elethdvb"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">THD_Vcn/Vca:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elethdvc"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">THD_Ia:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elethdia"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">THD_Ib:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elethdib"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">THD_Ic:</div>
+                        </td>
+                        <td>
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}elethdic"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- environment -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <h1 class="h3 mb-0 text-gray-800 align-center">Thông số vận hành</h1>
+
+                <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Thời gian</th>
+                        <th scope="col">Giá trị</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Ngày-->
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Ngày:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}daytb"></div>
+                        </td>
+                        </tr>
+                        <!-- Giờ bắt đầu-->
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Giờ bắt đầu:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}timetb"></div>
+                        </td>
+                        </tr>
+                        <!-- Thời gian chạy máy-->
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thời gian chạy máy:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}op"></div>
+                        </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr>
+                        <th scope="col">Cảm biến</th>
+                        <th scope="col">Giá trị</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tốc độ đặt:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}opepidsp"></div>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tốc độ đầu ra pid:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}opepidout"></div>
+                        </td>
+                        </tr>
+
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Góc mở van biogas:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}opevpb"></div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Áp suất tank biogas:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}opepb"></div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tốc độ phản hồi:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}opevsfb"></div>
+                        </td>
+                        </tr>
+
+                    </tbody>
+                    </table>
+
+                </div>
+                </div>
+
+                <h1 class="h3 mb-0 text-gray-800 align-center">Thông số môi trường</h1>
+
+                <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Cảm biến</th>
+                        <th scope="col">Giá trị</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Nhiệt độ nước:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}envtw"></div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Áp suất dầu:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}envpo"></div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Oxygen:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}envo2"></div>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">H2S:</div>
+                        </td>
+                        <td>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="{{ user.idMachine }}envh2s"></div>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- chart row -->
+    <div class="row row2">
+        <!-- real-time chart -->
+        <div class="card" style="width: 100%">
+            <div class="card-body">
+                <label for="listSensorHistory">Chọn cảm biến:</label>
+                <!-- <select class="form-control" id="listSensorHistory" name="sensor">
+                    //{% for i in listSensor %}
+                    //<option value="{{ i }}">{{ listSensor[i] }} ({{ i }})</option>
+                    //{% endfor %}
+                </select><br> -->
+                <label for="startTime">Thời gian bắt đầu:</label>
+                <input type="datetime-local" id="startTime" name="startTime"><br>
+                <label for="endTime">Thời gian kết thúc:</label>
+                <input type="datetime-local" id="endTime" name="endTime"><br>
+                <button class="btn btn-primary btn-sm" id="historySubmit">Tải lại</button>
+                <canvas id="{{ user.idMachine }}historyChart"></canvas>
+                <script type="text/javascript">
+                    const labels1 = [];
+
+                    const dataRealTime1 = {
+                        labels: labels1,
+                        datasets: [{
+                            label: "tốc độ (eles)",
+                            backgroundColor: 'rgb(255, 0, 0)',
+                            borderColor: 'rgb(255, 0, 0)',
+                            data: [],
+                    }]
+                    };
+
+                    const config1 = {
+                        type: 'line',
+                        data: dataRealTime1,
+                        options: {}
+                    };
+                    const myChart1 = new Chart(
+                        document.getElementById('{{ user.idMachine }}historyChart'),
+                        config1
+                    );
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- chart row -->
+    <div class="row row3">
+        <!-- history chart -->
+        <div class="card" style="width: 100%">
+            <div class="card-body">
+                <!-- <label for="listSensorRealTime">Chọn cảm biến:</label>
+                <select class="form-control" id="listSensorRealTime" name="sensor">
+                    //{% for i in listSensor %}
+                    //<option value="{{ i }}">{{ listSensor[i] }} ({{ i }})</option>
+                    //{% endfor %}
+                </select>
+                <br> -->
+                <button class="btn btn-primary btn-sm" id="realTimeSubmit">Tải lại</button>
+                <canvas id="{{ user.idMachine }}realTimeChart"></canvas>
+                <script type="text/javascript">
+                    const labels2 = [];
+
+                    const dataRealTime2 = {
+                        labels: labels2,
+                        datasets: [{
+                            label: "tốc độ (eles)",
+                            backgroundColor: 'rgb(255, 0, 0)',
+                            borderColor: 'rgb(255, 0, 0)',
+                            data: [],
+                    }]
+                    };
+
+                    const config2 = {
+                        type: 'line',
+                        data: dataRealTime2,
+                        options: {}
+                    };
+                    const myChart2 = new Chart(
+                        document.getElementById('{{ user.idMachine }}realTimeChart'),
+                        config2
+                    );
+                </script>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+
+{% block chartSourceJs %}
+    <script src="/static/js/realTimeChart.js"></script>
+    <script src="/static/js/historyChart.js"></script>
+{% endblock %}

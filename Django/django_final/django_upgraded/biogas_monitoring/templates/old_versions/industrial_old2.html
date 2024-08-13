@@ -1,0 +1,221 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block extrahead %}
+        <script defer>
+        </script>
+        <title>Industrial GUI</title>
+        <style>
+            #electrical_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10*10px;
+                height: 10*10px;
+                border-radius: 10px;
+                top:7*10px;
+                left:2*10px;
+            }
+            #environment_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10*10px;
+                height: 10*10px;
+                border-radius: 10px;
+                top:19*10px;
+                left:2*10px;
+            }
+            #operation_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10*10px;
+                height: 10*10px;
+                border-radius: 10px;
+                top:31*10px;
+                left:2*10px;
+            }
+            #generator
+            {
+                position:absolute;
+                left:15*10px;
+                top:-10*10px;
+                width:60*10px;
+                height:60*10px;
+                background-color: #646466;
+                background-size:cover;
+            }
+            #power
+            {
+                position:absolute;
+                width:20*10px;
+                height:20*10px;
+                right:10*10px;
+                top:2*10px;  
+            }
+            #bar
+            {
+                position:absolute;
+                bottom:5*10px;
+                right:5*10px;
+                width:80*10px;
+                height:5*10px;
+            }
+            #motor
+            {
+                position:absolute;
+                /* opacity: %50; */
+                /* background-color: white; */
+                width:10*10px;
+                height:10*10px;
+                top:17*10px;
+                left:10*10px;
+            }
+            #motor:hover
+            {
+                position:absolute;
+                opacity: 50%;
+                border-radius:10px;
+                background-color: white;
+                width:10*10px;
+                height:10*10px;
+                top:17*10px;
+                left:10*10px;
+            }
+            #bar_label
+            {
+                position: absolute;
+                bottom:2*10px;
+                /* background-color:gray; */
+                left:15*10px;
+                color:white;
+                font-size: 50px;
+            }
+        </style>
+{% endblock %}
+
+
+
+{% block mainContent %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Electrical parameters</h6>
+    </div>
+    <div class="card-body d-flex">
+        <div class="chart-area" style="height:70vh">
+            <div class="row">
+                <div class="col">
+            {% if usertype == "MODERATOR" %}
+        <div id="electrical_parameters" class="parts">
+            {% if usertype %}
+            User type: {{usertype}}
+            {% endif %}
+            {% if form %}
+            <form method = "POST" action="/data/industrial/">
+                {% csrf_token %}
+                {% if form %}
+                    {{ form }}
+                {% endif %}
+                <!-- <label for="machine">Select machine:</label>
+                <input type="text" id="machine" name="machine" ></input> -->
+                <input type="submit" value="Send">
+            </form>
+            {% endif %}
+            <br>
+            <!-- <b style="position:absolute;left:10%;top:37%;font-family:monospace;font-size:1.5*10px;">Display <br> raph</b>  -->
+        </div>
+        {% endif %}
+        <!-- <div id="environment_parameters" class="parts">  
+            <b style="position:absolute;left:10%;top:37%;font-family:monospace;font-size: 1.5*10px;;">environment <br> parameters</b> 
+        </div> -->
+        <!-- <div id="operation_parameters" class="parts">  
+            <b style="position:absolute;left:10%;top:37%;font-family:monospace;font-size:1.5*10px;">operation <br> parameters</b> 
+        </div> -->
+        <div id="generator">
+            <img src= {%static "img/gen_turn.gif"%} class="img-fluid" style="width:40vw;height:60vh;position:static;z-index:1;" id="generator_pic">
+            <div id="speed" style="background-color:greenyellow;width:160px;height:20px;z-index:2;position:absolute;top:40vh;left:18vw;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;"></div>
+            <div id="oil-temp" style="background-color:greenyellow;width:160px;height:20px;z-index:2;position:absolute;top:20vh;left:8vw;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius: 5px;"></div>
+            <div id="name_gen" style="background-color:greenyellow;width:300px;height:23px;z-index:2;position:absolute;top:50vh;left:10vw;border-style:solid;border-color: black; padding-left: 3px;font: 1rem Inconsolata, monospace;border-radius: 5px;"><b>Generator: {{ user.biogasmachineuser.Machines }}</b></div>
+        </div>
+        <div class="graph" id="power">
+        </div>
+        <div id="bar">
+        </div>
+        <div id="bar_label">
+        </div>
+        </div>
+        <div class="col">
+            <div class="row"> </div>
+            <div class="row align-self-center justify-content-center">
+                <div class="col">
+                    <form action="#">
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="1">A-N</option>
+                            <option value="2">A-B</option>
+                          </select>
+                    </form>
+                    <div class="graph" id="hello">
+                        <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh">
+                    </div>
+                    </div>
+            <div class="col">
+                <form action="#">
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="1">B-N</option>
+                        <option value="2">B-C</option>
+                      </select>
+                </form>
+        <div class="graph" id="hello">
+            <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh">
+        </div>
+        </div>
+        
+        <div class="col">
+            <form action="#">
+                <select class="form-select" aria-label="Default select example">
+                    <option value="1">C-N</option>
+                    <option value="2">C-A</option>
+                  </select>
+            </form>
+            <div class="graph" id="hello">
+                <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh">
+            </div>
+            </div>
+        </div>
+        <div class="row"> </div>
+    </div>
+    </div>
+    </div>
+</div>
+</div>
+</div>
+        
+        <script>
+
+        var machine = ``;
+
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/app/`+`{{machine}}`);
+    chatSocket.onopen = (event) => {
+  chatSocket.send("initiate");
+};
+    chatSocket.onmessage=function(e)
+        {
+            data = JSON.parse(e.data);
+            if (data['type']=="ele")
+            {
+            document.getElementById("speed").innerHTML = "speed: " + Math.round(data["g01eles"].value);
+            // if (data['g01elef'].value==0)
+            // {
+            //     document.getElementById("generator_pic").src = "{% static "img/gen_turn.png"%}";
+            // }
+            }
+            if (data['type']=='env')
+            {
+            document.getElementById("oil-temp").innerHTML = "Oil Pressure: " + Math.round(data["g01envo"].value) + " atm";
+            }
+            console.log(data);
+            chatSocket.send("continue");
+        }
+    </script>
+{% endblock %}

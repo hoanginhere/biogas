@@ -1,0 +1,702 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block extrahead %}
+        <script defer>
+        </script>
+        <title>Industrial GUI</title>
+        <style>
+            #electrical_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10*10px;
+                height: 10*10px;
+                border-radius: 10px;
+                top:7*10px;
+                left:2*10px;
+            }
+            #environment_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10*10px;
+                height: 10*10px;
+                border-radius: 10px;
+                top:19*10px;
+                left:2*10px;
+            }
+            #operation_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10*10px;
+                height: 10*10px;
+                border-radius: 10px;
+                top:31*10px;
+                left:2*10px;
+            }
+            #generator
+            {
+                position:absolute;
+                left:15*10px;
+                top:-10*10px;
+                width:60*10px;
+                height:60*10px;
+                background-color: #646466;
+                background-size:cover;
+            }
+            #power
+            {
+                position:absolute;
+                width:20*10px;
+                height:20*10px;
+                right:10*10px;
+                top:2*10px;  
+            }
+            #bar
+            {
+                position:absolute;
+                bottom:5*10px;
+                right:5*10px;
+                width:80*10px;
+                height:5*10px;
+            }
+            #motor
+            {
+                position:absolute;
+                /* opacity: %50; */
+                /* background-color: white; */
+                width:10*10px;
+                height:10*10px;
+                top:17*10px;
+                left:10*10px;
+            }
+            #motor:hover
+            {
+                position:absolute;
+                opacity: 50%;
+                border-radius:10px;
+                background-color: white;
+                width:10*10px;
+                height:10*10px;
+                top:17*10px;
+                left:10*10px;
+            }
+            #bar_label
+            {
+                position: absolute;
+                bottom:2*10px;
+                /* background-color:gray; */
+                left:15*10px;
+                color:white;
+                font-size: 50px;
+            }
+        </style>
+{% endblock %}
+
+
+
+{% block mainContent %}
+<div class="row mb-2 mx-2" >
+    <div class="card shadow" style="width:100vw">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Electrical parameters</h6>
+        </div>
+        <div class="card-body d-flex">
+            <div class="col-lg-6" >
+                <div class="row">
+                    <div class="chart-area" style="height:40vh">
+                        <div class="row" id="generator">
+                            <img src= {%static "img/gen_turn.gif"%} class="img-fluid" style="width:40vw;height:35vh;position:static;z-index:1;" id="generator_pic">
+                            <div id="speed" style="background-color:greenyellow;width:160px;height:20px;z-index:2;position:absolute;top:20vh;left:18vw;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;"></div>
+                            <div id="oil-temp" style="background-color:greenyellow;width:160px;height:20px;z-index:2;position:absolute;top:5vh;left:8vw;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius: 5px;"></div>
+                            <div id="name_gen" style="background-color:greenyellow;width:300px;height:23px;z-index:2;position:absolute;top:30vh;left:5vw;border-style:solid;border-color: black; padding-left: 3px;font: 1rem Inconsolata, monospace;border-radius: 5px;"><b>Generator: {{ user.biogasmachineuser.Machines }}</b></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10" id="line" >
+                    </div>
+                    <div class="col-sm-2" id="power_val" style="border:solid red;background-color: black;font: 1rem Inconsolata, monospace;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" >
+                <div class="row">
+                    <h6 style="border:solid black"><b>Voltages</b></h6>
+                </div>
+                <div class="row ml-3">
+                    <div class="col">
+                        <form action="#">
+                            <select class="form-select" id="volt_a" aria-label="Default select example">
+                                <option value="1">A-N</option>
+                                <option value="2">A-B</option>
+                              </select>
+                        </form>
+                        <div class="graph" id="volt1">
+                            <!-- <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh"> -->
+                            <!-- <canvas id="voltagechart1"></canvas> -->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <form action="#">
+                            <select class="form-select" id="volt_b" aria-label="Default select example">
+                                <option value="1">B-N</option>
+                                <option value="2">B-C</option>
+                            </select>
+                        </form>
+                        <div class="graph" id="volt2">
+                        <!-- <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh"> -->
+                        <!-- <canvas id="voltagechart1"></canvas> -->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <form action="#">
+                            <select class="form-select" id="volt_c" aria-label="Default select example">
+                                <option value="1">C-N</option>
+                                <option value="2">C-A</option>
+                            </select>
+                        </form>
+                        <div class="graph" id="volt3">
+                            <!-- <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh"> -->
+                            <!-- <canvas id="voltagechart1"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h6 style="border:solid black"><b>Currents/THD</b></h6>
+                </div>
+                <div class="row  ml-3">
+                    <div class="col">
+                        <form action="#">
+                            <select class="form-select" id="curr_a" aria-label="Default select example">
+                                <option value="1">Current A</option>
+                                <option value="2">THD I-A</option>
+                              </select>
+                        </form>
+                        <div class="graph" id="curr1">
+                            <!-- <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh"> -->
+                            <!-- <canvas id="voltagechart1"></canvas> -->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <form action="#">
+                            <select class="form-select" id="curr_b" aria-label="Default select example">
+                                <option value="1">Current B</option>
+                                <option value="2">THD I-B</option>
+                            </select>
+                        </form>
+                        <div class="graph" id="curr2">
+                        <!-- <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh"> -->
+                        <!-- <canvas id="voltagechart1"></canvas> -->
+                        </div>
+                    </div>
+                    <div class="col">
+                        <form action="#">
+                            <select class="form-select" id="curr_c" aria-label="Default select example">
+                                <option value="1">Current C</option>
+                                <option value="2">THD I-C</option>
+                            </select>
+                        </form>
+                        <div class="graph" id="curr3">
+                            <!-- <img src="{% static "img/gauge.png" %}" style="width:15vh;height:15vh"> -->
+                            <!-- <canvas id="voltagechart1"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mx-2" >
+    <div class="col-lg-6">
+        <div class="card shadow" style="width:inherit;height:inherit">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Environment parameters</h6>
+            </div>
+            <div class="card-body d-flex">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h><b>Temperature:</b></h>
+                        </div>
+                        <div class="col">
+                            <div id="temperature" style="background-color:greenyellow;width:inherit;height:25px;z-index:2;position:inherit;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;">9999999999</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h><b>H2S:</b></h>
+                        </div>
+                        <div class="col">
+                            <div id="h2s" style="background-color:greenyellow;width:inherit;height:25px;z-index:2;position:inherit;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;">9999999999</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- <div class="row">
+                        <div class="col">
+                            <h><b>Vibration:</b></h>
+                        </div>
+                        <div class="col">
+                            <div id="vibration" style="background-color:greenyellow;width:inherit;height:25px;z-index:2;position:inherit;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;">9999999999</div>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col">
+                            <h><b>CO2:</b></h>
+                        </div>
+                        <div class="col">
+                            <div id="co2" style="background-color:greenyellow;width:inherit;height:25px;z-index:2;position:inherit;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;">9999999999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4" >
+        <div class="card shadow" style="width:inherit;height:inherit">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Operation parameters</h6>
+            </div>
+            <div class="card-body d-flex">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h><b>On time:</b></h>
+                        </div>
+                        <div class="col">
+                            <div id="on_time" style="background-color:greenyellow;width:inherit;height:25px;z-index:2;position:inherit;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;">9999999999</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h><b>Speed:</b></h>
+                        </div>
+                        <div class="col">
+                            <div id="speed_under" style="background-color:greenyellow;width:inherit;height:25px;z-index:2;position:inherit;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;">9999999999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2" >
+        <div class="card shadow" style="width:inherit;height:inherit">
+            <div class="card-body d-flex">
+                <div class="col">
+                    <div class="row mb-2">
+                        <a href="#" class="btn btn-info btn-circle" title="Schedule operation">
+                            <i class="fa fa-calendar"></i>
+                        </a>
+                    </div>
+                    <div class="row">
+                        <a href="/data/vibration/" class="btn btn-info btn-circle" title="Vibration Analysis">
+                            <i class="fa-solid fa-wave-square"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row mb-2">
+                        <a href="/data/controller/" class="btn btn-danger btn-circle" title="Turn off generator">
+                            <i class="fa fa-power-off"></i>
+                        </a>
+                    </div>
+                    <!-- <div class="row mb-2">
+                        <a href="#" class="btn btn-info btn-circle" title="Schedule operation">
+                            <i class="fa fa-calendar"></i>
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <script xmlns="http://www.w3.org/1999/xhtml" src="{% static "js/pureknob.js" %}" type="text/javascript"></script>
+        <script>
+        
+        var machine = ``;
+        let power=0;
+        let val_maxi=0;
+        let idvolt1 = "uan_ele"
+        let idvolt2 = "ubn_ele"
+        let idvolt3 = "ucn_ele"
+        let idcurr1 = "ia_ele"
+        let idcurr2 = "ib_ele"
+        let idcurr3 = "ic_ele"
+        const volt_mode1= document.getElementById("volt_a");
+        const volt_mode2= document.getElementById("volt_b");
+        const volt_mode3= document.getElementById("volt_c");
+        const curr_mode1= document.getElementById("curr_a");
+        const curr_mode2= document.getElementById("curr_b");
+        const curr_mode3= document.getElementById("curr_c");        
+
+        volt_mode1.addEventListener("change",(event) => {
+            if (volt_mode1.value == 2){
+                idvolt1="uab_ele";
+            }
+            else if (volt_mode1.value == 1){
+                idvolt1="uan_ele";
+            }
+        });
+        volt_mode2.addEventListener("change",(event) => {
+            if (volt_mode1.value == 2){
+                idvolt2="ubc_ele";
+            }
+            else if (volt_mode1.value == 1){
+                idvolt2="ubn_ele";
+            }
+        });
+        volt_mode3.addEventListener("change",(event) => {
+            if (volt_mode1.value == 2){
+                idvolt3="uca_ele";
+            }
+            else if (volt_mode1.value == 1){
+                idvolt3="ucn_ele";
+            }
+        });
+        curr_mode1.addEventListener("change",(event) => {
+            if (curr_mode1.value == 1){
+                idcurr1="ia_ele";
+            }
+            else if (curr_mode1.value == 2){
+                idcurr1="thdia_ele";
+            }
+        });
+        curr_mode2.addEventListener("change",(event) => {
+            if (curr_mode2.value == 1){
+                idcurr2="ib_ele";
+            }
+            else if (curr_mode2.value == 2){
+                idcurr2="thdib_ele";
+            }
+        });
+        curr_mode3.addEventListener("change",(event) => {
+            if (volt_mode1.value == 1){
+                idcurr3="ic_ele";
+            }
+            else if (volt_mode1.value == 2){
+                idcurr3="thdic_ele";
+            }
+        });
+        
+
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/app/`+`{{machine}}`);
+    chatSocket.onopen = (event) => {
+  chatSocket.send("initiate");
+};
+    chatSocket.onmessage=function(e)
+        {
+            data = JSON.parse(e.data);
+            power=data["ptotal_ele"].value;
+            volt1=data[idvolt1].value;
+            volt2=data[idvolt2].value;
+            volt3=data[idvolt3].value;
+            curr1=data[idcurr1].value;
+            curr2=data[idcurr2].value;
+            curr3=data[idcurr3].value;
+
+            if (val_maxi<power)
+            {
+                val_maxi=power;
+            }
+            try{document.getElementById("speed").innerHTML = "speed: " + Math.round(data["speed_ope"].value);}catch(e){}
+            try{document.getElementById("speed_under").innerHTML = data["speed_ope"].value.toFixed(2);}catch(e){}
+            try{document.getElementById("power_val").innerHTML = "Power: " + Math.round(data["ptotal_ele"].value);}catch(e){}
+            // if (data['g01elef'].value==0)
+            // {
+            //     document.getElementById("generator_pic").src = "{% static "img/gen_turn.png"%}";
+            // }
+            
+      
+            try{document.getElementById("oil-temp").innerHTML = "Temperature: " + data["temperature_env"].value.toFixed(2) + "Celcius";}catch(e){}
+            try{document.getElementById("temperature").innerHTML = data["temperature_env"].value.toFixed(2)}catch(e){}
+            try{document.getElementById("co2").innerHTML = data["temperature_env"].value.toFixed(2)}catch(e){}
+            try{document.getElementById("h2s").innerHTML = data["temperature_env"].value.toFixed(2)}catch(e){}
+            try{document.getElementById("on_time").innerHTML = (data["workingtime_ope"].value/1000).toFixed(0)}catch(e){}
+            // console.log(data);
+            chatSocket.send("continue");
+        }
+        function demoBarGraph() {
+				const body = document.getElementById('line');
+				const graph = pureknob.createBarGraph(470, 50);
+				graph.setProperty('colorFG', '#44ff44');
+				graph.setProperty('colorMarkers', 'red');
+				graph.setProperty('markerStart', 0);
+				graph.setProperty('markerEnd', 80000);
+				graph.setProperty('markerStep', 10000);
+				graph.setProperty('valMin', 0);
+				graph.setProperty('valMax', 80000);
+				graph.setValue(power);
+				graph.setPeaks([val_maxi]);
+				const node = graph.node();
+				body.appendChild(node);
+				// window.graph = graph;
+
+				/*
+				 * This is executed on each timer tick.
+				 */
+				const t = function(e) {
+					//let v = graph.getValue();
+
+					/*
+					 * As long as value is greater than -80, decrement it.
+					 */
+					//if (v > -80) {
+                    if (power>40000)
+                    {
+                        graph.setProperty('colorFG', 'red');
+                    }
+                    else
+                    {
+                        graph.setProperty('colorFG', "#44ff44");
+                    }
+					graph.setValue(power);
+					//}
+				};
+				window.setInterval(t, 200);
+			}
+            demoBarGraph();
+            function demoKnob_1() {
+				// Create knob element, 300 x 300 px in size.
+				const knob = pureknob.createKnob(100, 100);
+
+				// Set properties.
+				knob.setProperty('angleStart', -0.75 * Math.PI);
+				knob.setProperty('angleEnd', 0.75 * Math.PI);
+				knob.setProperty('colorFG', '#00008B');
+                knob.setProperty('colorBG', '#ffa500');
+				knob.setProperty('trackWidth', 0.2);
+				knob.setProperty('valMin', 0);
+				knob.setProperty('valMax', 400);
+				knob.setProperty('readonly', 'true');
+
+				// Set initial value.
+				knob.setValue(0);
+
+				/*
+				 * Event listener.
+				 *
+				 * Parameter 'knob' is the knob object which was
+				 * actuated. Allows you to associate data with
+				 * it to discern which of your knobs was actuated.
+				 *
+				 * Parameter 'value' is the value which was set
+				 * by the user.
+				 */
+				// Create element node.
+				const node = knob.node();
+				// Add it to the DOM.
+				const elem = document.getElementById('volt1');
+				elem.appendChild(node);
+
+                const t = function(e) {
+					knob.setValue(volt1);
+					//}
+				};
+				window.setInterval(t, 200);
+			}
+            demoKnob_1();
+            function demoKnob_2() {
+				// Create knob element, 300 x 300 px in size.
+				const knob = pureknob.createKnob(100, 100);
+
+				// Set properties.
+				knob.setProperty('angleStart', -0.75 * Math.PI);
+				knob.setProperty('angleEnd', 0.75 * Math.PI);
+				knob.setProperty('colorFG', '#00008B');
+                knob.setProperty('colorBG', '#ffa500');
+				knob.setProperty('trackWidth', 0.2);
+				knob.setProperty('valMin', 0);
+				knob.setProperty('valMax', 400);
+				knob.setProperty('readonly', 'true');
+
+				// Set initial value.
+				knob.setValue(0);
+
+				/*
+				 * Event listener.
+				 *
+				 * Parameter 'knob' is the knob object which was
+				 * actuated. Allows you to associate data with
+				 * it to discern which of your knobs was actuated.
+				 *
+				 * Parameter 'value' is the value which was set
+				 * by the user.
+				 */
+				// Create element node.
+				const node = knob.node();
+				// Add it to the DOM.
+				const elem = document.getElementById('volt2');
+				elem.appendChild(node);
+                const t = function(e) {
+					knob.setValue(volt2);
+					//}
+				};
+				window.setInterval(t, 200);
+			}
+            demoKnob_2();
+            function demoKnob_3() {
+				// Create knob element, 300 x 300 px in size.
+				const knob = pureknob.createKnob(100, 100);
+
+				// Set properties.
+				knob.setProperty('angleStart', -0.75 * Math.PI);
+				knob.setProperty('angleEnd', 0.75 * Math.PI);
+				knob.setProperty('colorFG', '#00008B');
+                knob.setProperty('colorBG', '#ffa500');
+				knob.setProperty('trackWidth', 0.2);
+				knob.setProperty('valMin', 0);
+				knob.setProperty('valMax', 400);
+				knob.setProperty('readonly', 'true');
+
+				// Set initial value.
+				knob.setValue(0);
+
+				/*
+				 * Event listener.
+				 *
+				 * Parameter 'knob' is the knob object which was
+				 * actuated. Allows you to associate data with
+				 * it to discern which of your knobs was actuated.
+				 *
+				 * Parameter 'value' is the value which was set
+				 * by the user.
+				 */
+				// Create element node.
+				const node = knob.node();
+				// Add it to the DOM.
+				const elem = document.getElementById('volt3');
+				elem.appendChild(node);
+                const t = function(e) {
+					knob.setValue(volt3);
+					//}
+				};
+				window.setInterval(t, 200);
+			}
+            demoKnob_3();
+            function demoKnob_4() {
+				// Create knob element, 300 x 300 px in size.
+				const knob = pureknob.createKnob(100, 100);
+
+				// Set properties.
+				knob.setProperty('angleStart', -0.75 * Math.PI);
+				knob.setProperty('angleEnd', 0.75 * Math.PI);
+				knob.setProperty('colorFG', '#ffa500');
+                knob.setProperty('colorBG', '#00008B');
+				knob.setProperty('trackWidth', 0.2);
+				knob.setProperty('valMin', 0);
+				knob.setProperty('valMax', 100);
+				knob.setProperty('readonly', 'true');
+
+				// Set initial value.
+				knob.setValue(0);
+
+				/*
+				 * Event listener.
+				 *
+				 * Parameter 'knob' is the knob object which was
+				 * actuated. Allows you to associate data with
+				 * it to discern which of your knobs was actuated.
+				 *
+				 * Parameter 'value' is the value which was set
+				 * by the user.
+				 */
+				// Create element node.
+				const node = knob.node();
+				// Add it to the DOM.
+				const elem = document.getElementById('curr1');
+				elem.appendChild(node);
+
+                const t = function(e) {
+					knob.setValue(curr1);
+					//}
+				};
+				window.setInterval(t, 200);
+			}
+            demoKnob_4();
+            function demoKnob_5() {
+				// Create knob element, 300 x 300 px in size.
+				const knob = pureknob.createKnob(100, 100);
+
+				// Set properties.
+				knob.setProperty('angleStart', -0.75 * Math.PI);
+				knob.setProperty('angleEnd', 0.75 * Math.PI);
+				knob.setProperty('colorFG', '#ffa500');
+                knob.setProperty('colorBG', '#00008B');
+				knob.setProperty('trackWidth', 0.2);
+				knob.setProperty('valMin', 0);
+				knob.setProperty('valMax', 100);
+				knob.setProperty('readonly', 'true');
+
+				// Set initial value.
+				knob.setValue(0);
+
+				/*
+				 * Event listener.
+				 *
+				 * Parameter 'knob' is the knob object which was
+				 * actuated. Allows you to associate data with
+				 * it to discern which of your knobs was actuated.
+				 *
+				 * Parameter 'value' is the value which was set
+				 * by the user.
+				 */
+				// Create element node.
+				const node = knob.node();
+				// Add it to the DOM.
+				const elem = document.getElementById('curr2');
+				elem.appendChild(node);
+
+                const t = function(e) {
+					knob.setValue(curr2);
+					//}
+				};
+				window.setInterval(t, 200);
+			}
+            demoKnob_5();
+            function demoKnob_6() {
+				// Create knob element, 300 x 300 px in size.
+				const knob = pureknob.createKnob(100, 100);
+
+				// Set properties.
+				knob.setProperty('angleStart', -0.75 * Math.PI);
+				knob.setProperty('angleEnd', 0.75 * Math.PI);
+				knob.setProperty('colorFG', '#ffa500');
+                knob.setProperty('colorBG', '#00008B');
+				knob.setProperty('trackWidth', 0.2);
+				knob.setProperty('valMin', 0);
+				knob.setProperty('valMax', 100);
+				knob.setProperty('readonly', 'true');
+
+				// Set initial value.
+				knob.setValue(0);
+
+				/*
+				 * Event listener.
+				 *
+				 * Parameter 'knob' is the knob object which was
+				 * actuated. Allows you to associate data with
+				 * it to discern which of your knobs was actuated.
+				 *
+				 * Parameter 'value' is the value which was set
+				 * by the user.
+				 */
+				// Create element node.
+				const node = knob.node();
+				// Add it to the DOM.
+				const elem = document.getElementById('curr3');
+				elem.appendChild(node);
+
+                const t = function(e) {
+					knob.setValue(curr3);
+					//}
+				};
+				window.setInterval(t, 200);
+			}
+            demoKnob_6();
+    </script>
+{% endblock %}

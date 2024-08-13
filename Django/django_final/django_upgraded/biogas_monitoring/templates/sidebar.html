@@ -1,0 +1,139 @@
+{% load static %}
+
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/home/">
+        <div class="sidebar-brand-icon">
+            <!-- <i class="fas fa-desktop"></i> -->
+            <i class="fa-solid fa-industry"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Biogas<br>Manager</div>
+    </a>
+
+    <!-- Sidebar - Brand -->
+    <!-- <a class="sidebar-brand d-flex align-items-center justify-content-center" href="user/edit_profile/">
+        <div class="sidebar-brand-text mx-3">{{ user.idMachine }}</div>
+    </a> -->
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/user/edit_profile/">
+        <span>Hello, {{ user.username }}</span></a>
+
+        {% if user.username == 'admin' %}
+        <a class="nav-link" href="/data/add_machine/">
+            <span>Machine management</span></a>
+    {% endif %}
+    
+
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <i class="fas fa-tv"></i>
+        <span>Monitoring</span>
+    </a>
+
+
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" >
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Monitoring functions:</h6>
+            <a class="collapse-item" href="/home/">Show graphs</a>
+            <a class="collapse-item" href="/data/industrial/">Show GUI</a>
+        </div>
+    </div>
+    <a href="#collapse_selector_1" data-toggle="collapse"  class="nav-link collapsed">
+        <span class="icon text-white-50">
+            <i class="fas fa-info-circle"></i>
+        </span>
+        <span class="text">Thresholds</span>
+    </a>
+    
+    <div class="collapse" id="collapse_selector_1">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Monitoring functions:</h6>
+            <div class="col">
+                <div class="card-body d-flex">
+                    
+                    <form method="POST" action="/data/threshold">
+                        {% csrf_token %}
+                    <input type="text" id="id_MachineId" name="MachineId">
+                    <input type="text" id="id_ParamID" name="ParamID">
+                    <input type="text" id="id_Value" name="Value">
+                    <input type="submit" value="Submit">
+                </div>
+                </form>
+            </div>
+        </div>    
+        
+    </div>
+
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        <i class="fas fa-chart-bar"></i>
+        <span>Data Analysis</span>
+    </a>
+
+
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar" >
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Monitoring functions:</h6>
+            <a class="collapse-item" href="/data/loadgraphs/">Load Graphs</a>
+            <a class="collapse-item" href="/data/intervals/">Intervals</a>
+        </div>
+    </div>
+
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+        <!-- <i class="fas fa-chart-bar"></i> -->
+        <i class="fa-solid fa-wrench"></i>
+        <span>Advanced Functions</span>
+    </a>
+
+
+    <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar" >
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Maintenance functions:</h6>
+            <a class="collapse-item" href="/data/vibration/">Vibration Monitoring</a>
+            <a class="collapse-item" href="#">Operation Schedule</a>
+        </div>
+    </div>
+
+    <a class="nav-link" href="/data/controller/">
+        <i class="fa-solid fa-keyboard"></i>
+        <!-- <i class="fa-solid fa-dial"></i> -->
+        <!-- <i class="fas fa-fw fa-chart-area"></i> -->
+        <span>Control</span></a>
+
+    <a class="nav-link" href="/data/warnings/">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <!-- <i class="fa-solid fa-keyboard"></i> -->
+        <!-- <i class="fa-solid fa-dial"></i> -->
+        <span>Alarm</span></a>
+
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Settings</span>
+        </a>
+    
+        <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" >
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">User:</h6>
+                <a class="collapse-item" href="/user/edit_profile/">Account settings</a>
+                {% if user.username == "admin" %}
+                <a class="collapse-item" href="/data/add_machine/">Machine settings</a>
+                <a class="collapse-item" href="/user/reg_code/">Make registration codes</a>
+                {% endif %}
+            </div>
+        </div>
+
+    </li>
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>
+<!-- End of Sidebar -->
+
+

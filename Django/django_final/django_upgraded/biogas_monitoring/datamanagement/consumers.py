@@ -10,7 +10,6 @@ from paho import mqtt
 from .models import Parameters, Machine
 # from channels.db import database_sync_to_async
 # from asgiref.sync import sync_to_async
-import time
 from django.contrib.auth.decorators import login_required
 from usermanagement.models import Warnings,BiogasMachineModerator,BiogasMachineUser
 from .models import Machine

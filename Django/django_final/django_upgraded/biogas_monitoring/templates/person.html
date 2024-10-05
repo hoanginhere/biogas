@@ -506,10 +506,10 @@
                                 <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Frequency: </div></td>
                                 <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}elef"></div></td>
                             </tr>
-                            <!-- <tr>
+                            <tr>
                                 <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Vibration: </div></td>
                                 <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{machine.MachineID}}envtw"></div></td>
-                            </tr> -->
+                            </tr> 
                         </tbody>
                     </table>
                 </div>
@@ -546,14 +546,12 @@
         try{document.getElementById("{{ machine1.MachineID }}envh2s").innerHTML =data.{{machine1.MachineID}}["temperature_env"].value.toFixed(2);}catch(e){}
         try{document.getElementById("{{ machine1.MachineID }}envpo").innerHTML = data.{{machine1.MachineID}}["temperature_env"].value.toFixed(2);}catch(e){}
         {% endfor %}
-        
         // sleep(500)
         chatSocket.send('continue');
         }
         </script>
     {% endif %}
 
-    
 
 </div>
 <!-- /.container-fluid -->

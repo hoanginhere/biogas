@@ -13,4 +13,5 @@ urlpatterns = [
     path('vibration/',vibration_view),
     path('vibration/result/<str:machine>',vibration_result),
     path('threshold',threshold),
+    path('schedule/', schedule_view, name='schedule_view'),
 ]

@@ -11,8 +11,8 @@ ID="g10"
 broker = '27.71.16.120'
 port = 1883
 topic = "Sensor_Data"
-client_id = f'publish-{random.randint(0, 1000)}'
-
+#client_id = f'publish-{random.randint(0, 1000)}'
+client_id = "server_iot"
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc, properties=None):    
         if rc == 0:

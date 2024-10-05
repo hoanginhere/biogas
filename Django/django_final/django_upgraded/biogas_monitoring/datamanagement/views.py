@@ -217,3 +217,112 @@ def threshold(request):
         return HttpResponseRedirect("/data/industrial/")
 
 # Create your views here.
+# views.py
+import pandas as pd
+from django.shortcuts import render
+from .forms import ScheduleForm
+from .paperAlgorithm import Algorithm
+
+def schedule_view(request):
+    form = ScheduleForm()  # Khởi tạo form
+    results = None  # Biến để lưu kết quả
+    check = 0
+
+    if request.method == 'POST':
+        form = ScheduleForm(request.POST)
+        if form.is_valid():
+            check = 1
+            # Chỉ chạy thuật toán khi form hợp lệ
+            schedules = {
+                'exhaust_fan': {
+                    'index': 0,
+                    'schedule_option': form.cleaned_data['exhaust_fan_schedule_option'],
+                    'exact_hours': form.cleaned_data['exhaust_fan_exact_hours'],
+                    'schedule': form.cleaned_data['exhaust_fan_schedule'],
+                    'run_time': form.cleaned_data['exhaust_fan_run_time'],
+                    'power_mode': form.cleaned_data['exhaust_fan_power_mode'],
+                },
+                'wastewater_treatment': {
+                    'index': 1,
+                    'schedule_option': form.cleaned_data['wastewater_treatment_schedule_option'],
+                    'exact_hours': form.cleaned_data['wastewater_treatment_exact_hours'],
+                    'schedule': form.cleaned_data['wastewater_treatment_schedule'],
+                    'run_time': form.cleaned_data['wastewater_treatment_run_time'],
+                    'power_mode': form.cleaned_data['wastewater_treatment_power_mode'],
+                },
+                'cooling_pump': {
+                    'index': 2,
+                    'schedule_option': form.cleaned_data['cooling_pump_schedule_option'],
+                    'exact_hours': form.cleaned_data['cooling_pump_exact_hours'],
+                    'schedule': form.cleaned_data['cooling_pump_schedule'],
+                    'run_time': form.cleaned_data['cooling_pump_run_time'],
+                    'power_mode': form.cleaned_data['cooling_pump_power_mode'],
+                },
+                'lighting': {
+                    'index': 3,
+                    'schedule_option': form.cleaned_data['lighting_schedule_option'],
+                    'exact_hours': form.cleaned_data['lighting_exact_hours'],
+                    'schedule': form.cleaned_data['lighting_schedule'],
+                    'run_time': form.cleaned_data['lighting_run_time'],
+                    'power_mode': form.cleaned_data['lighting_power_mode'],
+                },
+                'aeration': {
+                    'index': 4,
+                    'schedule_option': form.cleaned_data['aeration_schedule_option'],
+                    'exact_hours': form.cleaned_data['aeration_exact_hours'],
+                    'schedule': form.cleaned_data['aeration_schedule'],
+                    'run_time': form.cleaned_data['aeration_run_time'],
+                    'power_mode': form.cleaned_data['aeration_power_mode'],
+                },
+                'compensation_pump': {
+                    'index': 5,
+                    'schedule_option': form.cleaned_data['compensation_pump_schedule_option'],
+                    'exact_hours': form.cleaned_data['compensation_pump_exact_hours'],
+                    'schedule': form.cleaned_data['compensation_pump_schedule'],
+                    'run_time': form.cleaned_data['compensation_pump_run_time'],
+                    'power_mode': form.cleaned_data['compensation_pump_power_mode'],
+                }
+            }
+            if check:
+                lastPositionBest, lastBestValue, allValue = run_algorithm(schedules)
+                time_data = {
+                    'Exhaust Fan': lastPositionBest[0],
+                    'Wastewater Treatment': lastPositionBest[1],
+                    'Cooling Pump': lastPositionBest[2],
+                    'Lighting': lastPositionBest[3],
+                    'Aeration': lastPositionBest[4],
+                    'Compensation Pump': lastPositionBest[5]
+                }
+                df = pd.DataFrame(time_data)  # Tạo bảng với thời gian và các thiết bị
+                html_table = df.to_html(classes='table table-striped', index=False)  # Chuyển DataFrame thành bảng HTML
+
+                results = {
+                    'html_table': html_table,  # Gửi bảng HTML ra template
+                    'lastBestValue': lastBestValue,
+                    'allValue': allValue,
+                }
+
+    return render(request, 'schedule.html', {'form': form, 'results': results})
+
+def run_algorithm(schedules):
+    lastPositionBest = None
+    lastBestValue = float('inf')
+    popSize = 10
+    MaxT = 20
+    algorithmIerial = 200
+    allValue = []
+    max_runtime = 12
+    max_bio_power = 500
+    max_bio_runtime = 15
+    biogas_power_limits = (100, 200, 300)
+
+    for m in range(algorithmIerial):
+        PositionBest, BestValue, arrayBestValueOfAlgorithm = Algorithm(popSize, MaxT, schedules, max_runtime, max_bio_power, max_bio_runtime, biogas_power_limits)
+        allValue.append(arrayBestValueOfAlgorithm)
+        if BestValue < lastBestValue:
+            lastBestValue = BestValue
+            lastPositionBest = PositionBest
+            lastPositionBest = [["On" if x == 1 else "Off" for x in row] for row in lastPositionBest]
+
+
+    return lastPositionBest, lastBestValue, allValue

@@ -54,8 +54,8 @@
     var id_machine="";
     id_verify.addEventListener("click",(event) => {
         id_machine= document.getElementById("id_MachineID").value;
-        {% if (user.biogasmachinemoderator.Active == True) %}
-        {% for (machines in user.biogasmachinemoderator.Machines.all) %}
+        {% if user.biogasmachinemoderator.Active == True %}
+        {% for machines in user.biogasmachinemoderator.Machines.all %}
         if (id_machine=="{{machines.MachineID}}")
         {
             // alert("True");

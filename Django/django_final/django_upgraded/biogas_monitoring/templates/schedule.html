@@ -1,0 +1,229 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block mainContent %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lập lịch thiết bị</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 20px;
+        }
+
+        fieldset {
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 0 10px;
+            color: #007bff;
+        }
+
+        form button {
+            grid-column: 1 / -1;
+            width: 200px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .results-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .table-container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Lập lịch thiết bị</h1>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Quạt hút -->
+            <fieldset>
+                <legend>Quạt hút</legend>
+                {{ form.exhaust_fan_schedule_option.label_tag }}<br>
+                {{ form.exhaust_fan_schedule_option }}<br>
+                {{ form.exhaust_fan_run_time.label_tag }}<br>
+                {{ form.exhaust_fan_run_time }}<br>
+                {{ form.exhaust_fan_schedule.label_tag }}<br>
+                {{ form.exhaust_fan_schedule }}<br>
+                {{ form.exhaust_fan_exact_hours.label_tag }}<br>
+                {{ form.exhaust_fan_exact_hours }}<br>
+                {{ form.exhaust_fan_power_mode.label_tag }}<br>
+                {{ form.exhaust_fan_power_mode }}<br>
+            </fieldset>
+
+            <!-- Xử lý nước thải -->
+            <fieldset>
+                <legend>Xử lý nước thải</legend>
+                {{ form.wastewater_treatment_schedule_option.label_tag }}<br>
+                {{ form.wastewater_treatment_schedule_option }}<br>
+                {{ form.wastewater_treatment_run_time.label_tag }}<br>
+                {{ form.wastewater_treatment_run_time }}<br>
+                {{ form.wastewater_treatment_schedule.label_tag }}<br>
+                {{ form.wastewater_treatment_schedule }}<br>
+                {{ form.wastewater_treatment_exact_hours.label_tag }}<br>
+                {{ form.wastewater_treatment_exact_hours }}<br>
+                {{ form.wastewater_treatment_power_mode.label_tag }}<br>
+                {{ form.wastewater_treatment_power_mode }}<br>
+            </fieldset>
+
+            <!-- Máy bơm làm mát -->
+            <fieldset>
+                <legend>Máy bơm làm mát</legend>
+                {{ form.cooling_pump_schedule_option.label_tag }}<br>
+                {{ form.cooling_pump_schedule_option }}<br>
+                {{ form.cooling_pump_run_time.label_tag }}<br>
+                {{ form.cooling_pump_run_time }}<br>
+                {{ form.cooling_pump_schedule.label_tag }}<br>
+                {{ form.cooling_pump_schedule }}<br>
+                {{ form.cooling_pump_exact_hours.label_tag }}<br>
+                {{ form.cooling_pump_exact_hours }}<br>
+                {{ form.cooling_pump_power_mode.label_tag }}<br>
+                {{ form.cooling_pump_power_mode }}<br>
+            </fieldset>
+
+            <!-- Đèn chiếu sáng -->
+            <fieldset>
+                <legend>Đèn chiếu sáng</legend>
+                {{ form.lighting_schedule_option.label_tag }}<br>
+                {{ form.lighting_schedule_option }}<br>
+                {{ form.lighting_run_time.label_tag }}<br>
+                {{ form.lighting_run_time }}<br>
+                {{ form.lighting_schedule.label_tag }}<br>
+                {{ form.lighting_schedule }}<br>
+                {{ form.lighting_exact_hours.label_tag }}<br>
+                {{ form.lighting_exact_hours }}<br>
+                {{ form.lighting_power_mode.label_tag }}<br>
+                {{ form.lighting_power_mode }}<br>
+            </fieldset>
+
+            <!-- Máy sục khí -->
+            <fieldset>
+                <legend>Máy sục khí</legend>
+                {{ form.aeration_schedule_option.label_tag }}<br>
+                {{ form.aeration_schedule_option }}<br>
+                {{ form.aeration_run_time.label_tag }}<br>
+                {{ form.aeration_run_time }}<br>
+                {{ form.aeration_schedule.label_tag }}<br>
+                {{ form.aeration_schedule }}<br>
+                {{ form.aeration_exact_hours.label_tag }}<br>
+                {{ form.aeration_exact_hours }}<br>
+                {{ form.aeration_power_mode.label_tag }}<br>
+                {{ form.aeration_power_mode }}<br>
+            </fieldset>
+
+            <!-- Máy bơm bù -->
+            <fieldset>
+                <legend>Máy bơm bù</legend>
+                {{ form.compensation_pump_schedule_option.label_tag }}<br>
+                {{ form.compensation_pump_schedule_option }}<br>
+                {{ form.compensation_pump_run_time.label_tag }}<br>
+                {{ form.compensation_pump_run_time }}<br>
+                {{ form.compensation_pump_schedule.label_tag }}<br>
+                {{ form.compensation_pump_schedule }}<br>
+                {{ form.compensation_pump_exact_hours.label_tag }}<br>
+                {{ form.compensation_pump_exact_hours }}<br>
+                {{ form.compensation_pump_power_mode.label_tag }}<br>
+                {{ form.compensation_pump_power_mode }}<br>
+            </fieldset>
+
+            <button type="submit">Gửi</button>
+        </form>
+    </div>
+
+    {% if results %}
+        <div class="results-container">
+            <h2>Schedule Result</h2>
+            <h3>Best Value: {{ results.lastBestValue }}</h3>
+            <div class="table-container">
+                <!-- Hiển thị bảng kết quả từ DataFrame -->
+                {{ results.html_table|safe }}
+            </div>
+        </div>
+    {% endif %}
+</body>
+</html>
+
+{% endblock %}

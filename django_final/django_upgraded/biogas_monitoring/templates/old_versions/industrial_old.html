@@ -1,0 +1,184 @@
+{% load static %}
+<html>
+    <head>
+        <script defer>
+        </script>
+        <title>Industrial GUI</title>
+        <link rel="icon" type="image/x-icon" href={% static "img/favicon.ico" %}>
+        <!-- <link rel="stylesheet" src="css/stylesheet.css"> -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta https-equiv="refresh" content="30">
+        <meta name="description" content="demo website">
+        <style>
+            #electrical_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10vw;
+                height: 10vw;
+                border-radius: 10px;
+                top:7vw;
+                left:2vw;
+            }
+            #environment_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10vw;
+                height: 10vw;
+                border-radius: 10px;
+                top:19vw;
+                left:2vw;
+            }
+            #operation_parameters
+            {
+                position:absolute;
+                background-color: gray;
+                width:10vw;
+                height: 10vw;
+                border-radius: 10px;
+                top:31vw;
+                left:2vw;
+            }
+            #generator
+            {
+                position:absolute;
+                left:15vw;
+                top:-10vw;
+                width:60vw;
+                height:60vw;
+                background-color: #646466;
+                background-size:cover;
+            }
+            #power
+            {
+                position:absolute;
+                width:20vw;
+                height:20vw;
+                right:10vw;
+                top:2vw;  
+            }
+            #bar
+            {
+                position:absolute;
+                bottom:5vw;
+                right:5vw;
+                width:80vw;
+                height:5vw;
+            }
+            #motor
+            {
+                position:absolute;
+                /* opacity: %50; */
+                /* background-color: white; */
+                width:10vw;
+                height:10vw;
+                top:17vw;
+                left:10vw;
+            }
+            #motor:hover
+            {
+                position:absolute;
+                opacity: 50%;
+                border-radius:10px;
+                background-color: white;
+                width:10vw;
+                height:10vw;
+                top:17vw;
+                left:10vw;
+            }
+            #return
+            {
+                width:5vw;
+                height:2vw;
+                background-color:red;
+                position:absolute;
+                bottom:5vw;
+                left:2vw;
+                cursor:pointer;
+            }
+            #bar_label
+            {
+                position: absolute;
+                bottom:2vw;
+                /* background-color:gray; */
+                left:15vw;
+                color:white;
+                font-size: 50px;
+            }
+        </style>
+    </head>
+
+    <body style="background-color: #646466;">
+
+        {% if usertype == "MODERATOR" %}
+        <div id="electrical_parameters" class="parts">
+            {% if usertype %}
+            User type: {{usertype}}
+            {% endif %}
+            {% if form %}
+            <form method = "POST" action="/data/industrial/">
+                {% csrf_token %}
+                {% if form %}
+                    {{ form }}
+                {% endif %}
+                <!-- <label for="machine">Select machine:</label>
+                <input type="text" id="machine" name="machine" ></input> -->
+                <input type="submit" value="Send">
+            </form>
+            {% endif %}
+            <br>
+            <!-- <b style="position:absolute;left:10%;top:37%;font-family:monospace;font-size:1.5vw;">Display <br> raph</b>  -->
+        </div>
+        {% endif %}
+        <!-- <div id="environment_parameters" class="parts">  
+            <b style="position:absolute;left:10%;top:37%;font-family:monospace;font-size: 1.5vw;;">environment <br> parameters</b> 
+        </div> -->
+        <!-- <div id="operation_parameters" class="parts">  
+            <b style="position:absolute;left:10%;top:37%;font-family:monospace;font-size:1.5vw;">operation <br> parameters</b> 
+        </div> -->
+        <div id="return" onclick="location.href='/home/';">
+            <b style="font-family:monospace;position:absolute;left:20%;top:20%">return</b>
+        </div>
+        <div id="generator">
+            <img src= {%static "img/gen_turn.gif"%} style="width:60vw;height:80vh;position:absolute;top:10vh;z-index:1;" id="generator_pic">
+            <div id="speed" style="background-color:greenyellow;width:110px;height:20px;z-index:2;position:absolute;top:63vh;left:31vw;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius:5px;"></div>
+            <div id="oil-temp" style="background-color:greenyellow;width:160px;height:20px;z-index:2;position:absolute;top:30vh;left:17vw;border-style:solid;border-color: black; padding-left: 3px;font: 0.85rem Inconsolata, monospace;border-radius: 5px;"></div>
+        </div>
+        <div class="graph" id="power">
+        </div>
+        <div id="bar">
+        </div>
+        <div id="bar_label">
+        </div>
+        <script>
+        {% if not machine %}
+        machine = ``
+        {% endif %}
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/app/`+`{{machine}}`);
+    chatSocket.onopen = (event) => {
+  chatSocket.send("initiate");
+};
+    chatSocket.onmessage=function(e)
+        {
+            data = JSON.parse(e.data);
+            if (data['type']=="ele")
+            {
+            document.getElementById("speed").innerHTML = "speed: " + Math.round(data["g01eles"].value);
+            // if (data['g01elef'].value==0)
+            // {
+            //     document.getElementById("generator_pic").src = "{% static "img/gen_turn.png"%}";
+            // }
+            }
+            if (data['type']=='env')
+            {
+            document.getElementById("oil-temp").innerHTML = "Oil Pressure: " + Math.round(data["g01envo"].value) + " atm";
+            }
+            console.log(data);
+            chatSocket.send("continue");
+        }
+    </script>
+
+    </body>
+</html>

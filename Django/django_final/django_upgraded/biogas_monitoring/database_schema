@@ -1,0 +1,209 @@
+digraph {
+	django_migrations [label=django_migrations]
+	"django_migrations.id" [label=id shape=ellipse]
+	django_migrations -> "django_migrations.id"
+	"django_migrations.app" [label=app shape=ellipse]
+	django_migrations -> "django_migrations.app"
+	"django_migrations.name" [label=name shape=ellipse]
+	django_migrations -> "django_migrations.name"
+	"django_migrations.applied" [label=applied shape=ellipse]
+	django_migrations -> "django_migrations.applied"
+	sqlite_sequence [label=sqlite_sequence]
+	"sqlite_sequence.name" [label=name shape=ellipse]
+	sqlite_sequence -> "sqlite_sequence.name"
+	"sqlite_sequence.seq" [label=seq shape=ellipse]
+	sqlite_sequence -> "sqlite_sequence.seq"
+	auth_group_permissions [label=auth_group_permissions]
+	"auth_group_permissions.id" [label=id shape=ellipse]
+	auth_group_permissions -> "auth_group_permissions.id"
+	"auth_group_permissions.group_id" [label=group_id shape=ellipse]
+	auth_group_permissions -> "auth_group_permissions.group_id"
+	"auth_group_permissions.permission_id" [label=permission_id shape=ellipse]
+	auth_group_permissions -> "auth_group_permissions.permission_id"
+	auth_group_permissions -> permission_id [label=FK]
+	auth_group_permissions -> group_id [label=FK]
+	auth_user_groups [label=auth_user_groups]
+	"auth_user_groups.id" [label=id shape=ellipse]
+	auth_user_groups -> "auth_user_groups.id"
+	"auth_user_groups.user_id" [label=user_id shape=ellipse]
+	auth_user_groups -> "auth_user_groups.user_id"
+	"auth_user_groups.group_id" [label=group_id shape=ellipse]
+	auth_user_groups -> "auth_user_groups.group_id"
+	auth_user_groups -> group_id [label=FK]
+	auth_user_groups -> user_id [label=FK]
+	auth_user_user_permissions [label=auth_user_user_permissions]
+	"auth_user_user_permissions.id" [label=id shape=ellipse]
+	auth_user_user_permissions -> "auth_user_user_permissions.id"
+	"auth_user_user_permissions.user_id" [label=user_id shape=ellipse]
+	auth_user_user_permissions -> "auth_user_user_permissions.user_id"
+	"auth_user_user_permissions.permission_id" [label=permission_id shape=ellipse]
+	auth_user_user_permissions -> "auth_user_user_permissions.permission_id"
+	auth_user_user_permissions -> permission_id [label=FK]
+	auth_user_user_permissions -> user_id [label=FK]
+	django_admin_log [label=django_admin_log]
+	"django_admin_log.id" [label=id shape=ellipse]
+	django_admin_log -> "django_admin_log.id"
+	"django_admin_log.object_id" [label=object_id shape=ellipse]
+	django_admin_log -> "django_admin_log.object_id"
+	"django_admin_log.object_repr" [label=object_repr shape=ellipse]
+	django_admin_log -> "django_admin_log.object_repr"
+	"django_admin_log.action_flag" [label=action_flag shape=ellipse]
+	django_admin_log -> "django_admin_log.action_flag"
+	"django_admin_log.change_message" [label=change_message shape=ellipse]
+	django_admin_log -> "django_admin_log.change_message"
+	"django_admin_log.content_type_id" [label=content_type_id shape=ellipse]
+	django_admin_log -> "django_admin_log.content_type_id"
+	"django_admin_log.user_id" [label=user_id shape=ellipse]
+	django_admin_log -> "django_admin_log.user_id"
+	"django_admin_log.action_time" [label=action_time shape=ellipse]
+	django_admin_log -> "django_admin_log.action_time"
+	django_admin_log -> user_id [label=FK]
+	django_admin_log -> content_type_id [label=FK]
+	django_content_type [label=django_content_type]
+	"django_content_type.id" [label=id shape=ellipse]
+	django_content_type -> "django_content_type.id"
+	"django_content_type.app_label" [label=app_label shape=ellipse]
+	django_content_type -> "django_content_type.app_label"
+	"django_content_type.model" [label=model shape=ellipse]
+	django_content_type -> "django_content_type.model"
+	auth_permission [label=auth_permission]
+	"auth_permission.id" [label=id shape=ellipse]
+	auth_permission -> "auth_permission.id"
+	"auth_permission.content_type_id" [label=content_type_id shape=ellipse]
+	auth_permission -> "auth_permission.content_type_id"
+	"auth_permission.codename" [label=codename shape=ellipse]
+	auth_permission -> "auth_permission.codename"
+	"auth_permission.name" [label=name shape=ellipse]
+	auth_permission -> "auth_permission.name"
+	auth_permission -> content_type_id [label=FK]
+	auth_group [label=auth_group]
+	"auth_group.id" [label=id shape=ellipse]
+	auth_group -> "auth_group.id"
+	"auth_group.name" [label=name shape=ellipse]
+	auth_group -> "auth_group.name"
+	auth_user [label=auth_user]
+	"auth_user.id" [label=id shape=ellipse]
+	auth_user -> "auth_user.id"
+	"auth_user.password" [label=password shape=ellipse]
+	auth_user -> "auth_user.password"
+	"auth_user.last_login" [label=last_login shape=ellipse]
+	auth_user -> "auth_user.last_login"
+	"auth_user.is_superuser" [label=is_superuser shape=ellipse]
+	auth_user -> "auth_user.is_superuser"
+	"auth_user.username" [label=username shape=ellipse]
+	auth_user -> "auth_user.username"
+	"auth_user.last_name" [label=last_name shape=ellipse]
+	auth_user -> "auth_user.last_name"
+	"auth_user.email" [label=email shape=ellipse]
+	auth_user -> "auth_user.email"
+	"auth_user.is_staff" [label=is_staff shape=ellipse]
+	auth_user -> "auth_user.is_staff"
+	"auth_user.is_active" [label=is_active shape=ellipse]
+	auth_user -> "auth_user.is_active"
+	"auth_user.date_joined" [label=date_joined shape=ellipse]
+	auth_user -> "auth_user.date_joined"
+	"auth_user.first_name" [label=first_name shape=ellipse]
+	auth_user -> "auth_user.first_name"
+	datamanagement_machine [label=datamanagement_machine]
+	"datamanagement_machine.id" [label=id shape=ellipse]
+	datamanagement_machine -> "datamanagement_machine.id"
+	"datamanagement_machine.MachineName" [label=MachineName shape=ellipse]
+	datamanagement_machine -> "datamanagement_machine.MachineName"
+	"datamanagement_machine.MachineID" [label=MachineID shape=ellipse]
+	datamanagement_machine -> "datamanagement_machine.MachineID"
+	django_session [label=django_session]
+	"django_session.session_key" [label=session_key shape=ellipse]
+	django_session -> "django_session.session_key"
+	"django_session.session_data" [label=session_data shape=ellipse]
+	django_session -> "django_session.session_data"
+	"django_session.expire_date" [label=expire_date shape=ellipse]
+	django_session -> "django_session.expire_date"
+	usermanagement_registrationcode [label=usermanagement_registrationcode]
+	"usermanagement_registrationcode.id" [label=id shape=ellipse]
+	usermanagement_registrationcode -> "usermanagement_registrationcode.id"
+	"usermanagement_registrationcode.Code" [label=Code shape=ellipse]
+	usermanagement_registrationcode -> "usermanagement_registrationcode.Code"
+	"usermanagement_registrationcode.Value" [label=Value shape=ellipse]
+	usermanagement_registrationcode -> "usermanagement_registrationcode.Value"
+	"usermanagement_registrationcode.UserType" [label=UserType shape=ellipse]
+	usermanagement_registrationcode -> "usermanagement_registrationcode.UserType"
+	usermanagement_biogasmachinemoderator [label=usermanagement_biogasmachinemoderator]
+	"usermanagement_biogasmachinemoderator.id" [label=id shape=ellipse]
+	usermanagement_biogasmachinemoderator -> "usermanagement_biogasmachinemoderator.id"
+	"usermanagement_biogasmachinemoderator.PhoneNumber" [label=PhoneNumber shape=ellipse]
+	usermanagement_biogasmachinemoderator -> "usermanagement_biogasmachinemoderator.PhoneNumber"
+	"usermanagement_biogasmachinemoderator.Sex" [label=Sex shape=ellipse]
+	usermanagement_biogasmachinemoderator -> "usermanagement_biogasmachinemoderator.Sex"
+	"usermanagement_biogasmachinemoderator.Address" [label=Address shape=ellipse]
+	usermanagement_biogasmachinemoderator -> "usermanagement_biogasmachinemoderator.Address"
+	"usermanagement_biogasmachinemoderator.Registered" [label=Registered shape=ellipse]
+	usermanagement_biogasmachinemoderator -> "usermanagement_biogasmachinemoderator.Registered"
+	"usermanagement_biogasmachinemoderator.Active" [label=Active shape=ellipse]
+	usermanagement_biogasmachinemoderator -> "usermanagement_biogasmachinemoderator.Active"
+	"usermanagement_biogasmachinemoderator.user_id" [label=user_id shape=ellipse]
+	usermanagement_biogasmachinemoderator -> "usermanagement_biogasmachinemoderator.user_id"
+	usermanagement_biogasmachinemoderator -> user_id [label=FK]
+	usermanagement_biogasmachinemoderator_Machines [label=usermanagement_biogasmachinemoderator_Machines]
+	"usermanagement_biogasmachinemoderator_Machines.id" [label=id shape=ellipse]
+	usermanagement_biogasmachinemoderator_Machines -> "usermanagement_biogasmachinemoderator_Machines.id"
+	"usermanagement_biogasmachinemoderator_Machines.biogasmachinemoderator_id" [label=biogasmachinemoderator_id shape=ellipse]
+	usermanagement_biogasmachinemoderator_Machines -> "usermanagement_biogasmachinemoderator_Machines.biogasmachinemoderator_id"
+	"usermanagement_biogasmachinemoderator_Machines.machine_id" [label=machine_id shape=ellipse]
+	usermanagement_biogasmachinemoderator_Machines -> "usermanagement_biogasmachinemoderator_Machines.machine_id"
+	usermanagement_biogasmachinemoderator_Machines -> machine_id [label=FK]
+	usermanagement_biogasmachinemoderator_Machines -> biogasmachinemoderator_id [label=FK]
+	usermanagement_biogasmachineuser [label=usermanagement_biogasmachineuser]
+	"usermanagement_biogasmachineuser.id" [label=id shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.id"
+	"usermanagement_biogasmachineuser.PhoneNumber" [label=PhoneNumber shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.PhoneNumber"
+	"usermanagement_biogasmachineuser.Sex" [label=Sex shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.Sex"
+	"usermanagement_biogasmachineuser.Address" [label=Address shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.Address"
+	"usermanagement_biogasmachineuser.Registered" [label=Registered shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.Registered"
+	"usermanagement_biogasmachineuser.Active" [label=Active shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.Active"
+	"usermanagement_biogasmachineuser.Machines_id" [label=Machines_id shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.Machines_id"
+	"usermanagement_biogasmachineuser.user_id" [label=user_id shape=ellipse]
+	usermanagement_biogasmachineuser -> "usermanagement_biogasmachineuser.user_id"
+	usermanagement_biogasmachineuser -> user_id [label=FK]
+	usermanagement_biogasmachineuser -> Machines_id [label=FK]
+	usermanagement_warnings [label=usermanagement_warnings]
+	"usermanagement_warnings.id" [label=id shape=ellipse]
+	usermanagement_warnings -> "usermanagement_warnings.id"
+	"usermanagement_warnings.WarningContent" [label=WarningContent shape=ellipse]
+	usermanagement_warnings -> "usermanagement_warnings.WarningContent"
+	"usermanagement_warnings.WarningType" [label=WarningType shape=ellipse]
+	usermanagement_warnings -> "usermanagement_warnings.WarningType"
+	"usermanagement_warnings.WarningResolution" [label=WarningResolution shape=ellipse]
+	usermanagement_warnings -> "usermanagement_warnings.WarningResolution"
+	"usermanagement_warnings.Machines_id" [label=Machines_id shape=ellipse]
+	usermanagement_warnings -> "usermanagement_warnings.Machines_id"
+	usermanagement_warnings -> Machines_id [label=FK]
+	datamanagement_thresholds [label=datamanagement_thresholds]
+	"datamanagement_thresholds.id" [label=id shape=ellipse]
+	datamanagement_thresholds -> "datamanagement_thresholds.id"
+	"datamanagement_thresholds.ParamID" [label=ParamID shape=ellipse]
+	datamanagement_thresholds -> "datamanagement_thresholds.ParamID"
+	"datamanagement_thresholds.Value" [label=Value shape=ellipse]
+	datamanagement_thresholds -> "datamanagement_thresholds.Value"
+	"datamanagement_thresholds.MachineId" [label=MachineId shape=ellipse]
+	datamanagement_thresholds -> "datamanagement_thresholds.MachineId"
+	datamanagement_parameters [label=datamanagement_parameters]
+	"datamanagement_parameters.id" [label=id shape=ellipse]
+	datamanagement_parameters -> "datamanagement_parameters.id"
+	"datamanagement_parameters.MachineIDString" [label=MachineIDString shape=ellipse]
+	datamanagement_parameters -> "datamanagement_parameters.MachineIDString"
+	"datamanagement_parameters.Id_parameter" [label=Id_parameter shape=ellipse]
+	datamanagement_parameters -> "datamanagement_parameters.Id_parameter"
+	"datamanagement_parameters.time" [label=time shape=ellipse]
+	datamanagement_parameters -> "datamanagement_parameters.time"
+	"datamanagement_parameters.MachineID_id" [label=MachineID_id shape=ellipse]
+	datamanagement_parameters -> "datamanagement_parameters.MachineID_id"
+	"datamanagement_parameters.value" [label=value shape=ellipse]
+	datamanagement_parameters -> "datamanagement_parameters.value"
+	datamanagement_parameters -> MachineID_id [label=FK]
+}

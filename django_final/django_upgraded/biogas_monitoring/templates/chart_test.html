@@ -1,0 +1,54 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+      
+
+      
+      <script>
+        var ctx = document.getElementById("myChart").getContext("2d");
+
+var chart = new Chart(ctx, {
+  type: 'gauge',
+  data: {
+    datasets: [{
+      value: 0.5,
+      minValue: 0,
+      data: [1, 2, 3, 4],
+      backgroundColor: ['green', 'yellow', 'orange', 'red'],
+    }]
+  },
+  options: {
+    needle: {
+      radiusPercentage: 2,
+      widthPercentage: 3.2,
+      lengthPercentage: 80,
+      color: 'rgba(0, 0, 0, 1)'
+    },
+    valueLabel: {
+      display: true,
+      formatter: (value) => {
+        return '$' + Math.round(value);
+      },
+      color: 'rgba(255, 255, 255, 1)',
+      backgroundColor: 'rgba(0, 0, 0, 1)',
+      borderRadius: 5,
+      padding: {
+        top: 10,
+        bottom: 10
+      }
+    }
+  }
+});
+
+      </script>
+
+</body>
+
+</html>

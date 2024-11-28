@@ -1,0 +1,247 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block mainContent %}
+<script>
+    function addData(chart, data) {
+    // chart.data.labels.push(label);
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+    });
+    chart.update();
+}    
+</script>
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Monitoring GUI</h1>
+    </div>
+    <div class="row">
+        <div class="col-xl-4 col-md-4 mb-4 col1">
+            <div class="card border-left-primary shadow h-100 py-2" style="width:50vw">
+                <div class="card-body" style="width:50vw">
+                    <h1 class="h3 mb-0 text-gray-800 align-center">Parameters</h1>
+                    <p>{{usertype}}</p>
+                    {% if usertype == "USER" %}
+                    <p>Machine name: {{machine_name}}</p>
+                    <p>{{user.biogasmachineuser.Machines.MachineID}}</p>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Status: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}status"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Date:</div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}daytb"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Start time:</div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}timetb"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Duration of operation:</div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}op"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Energy: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}eleewh"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Power:</div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}elepwt"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Voltage:</div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}elevna"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Current: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}eleiav"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Speed: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}eles"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Frequency: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}elef"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">WATER TEMPERATURE: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envtw"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">OIL PRESSURE: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envpo"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">OXYGEN: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envo2"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">H2S: </div></td>
+                                        <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.biogasmachineuser.Machines.MachineID }}envh2s"></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-4 col-md-4 mb-4 col1">
+            <div class="card border-left-primary shadow h-100 py-2" style="width:50vw">
+                <div class="card-body" style="width:50vw">
+                    <canvas id="barsintown">
+                    </canvas> 
+                    <canvas id="voltage3">
+                    </canvas> 
+                    <script>
+                        
+                        myChart3= new Chart(
+                            document.getElementById('barsintown'),
+                            {
+                            type: 'line',
+                            options: {
+                                animation: false,
+                                plugins: {
+                                legend: {
+                                    display: true
+                                },
+                                tooltip: {
+                                    enabled: false
+                                }
+                                }
+                            },
+                            data: {
+                                labels: [t0,t1,t2,t3,t4,t5],
+                                datasets: [
+                                {
+                                    label: 'Voltage To Neutral',
+                                    data: [0,1,2,3,4,5,6],
+                                    borderColor: [
+                                    'rgb(75, 192, 192)'
+                                    ],
+                                    backgroundColor: 'pink',
+                                    tension: 0.2
+                                    
+                                }
+                                ]
+                            }
+                            }
+                        );
+
+                        myChart4= new Chart(
+                            document.getElementById('voltage3'),
+                            {
+                            type: 'pie',
+                            options: {
+                                animation: true,
+                                plugins: {
+                                legend: {
+                                    display: true
+                                },
+                                tooltip: {
+                                    enabled: false
+                                }
+                                }
+                            },
+                            data: {
+                                labels: ['PhaseA','PhaseB','PhaseC'],
+                                datasets: [
+                                {
+                                    label: 'Voltage by Phase',
+                                    data: [0,0,0],
+                                    backgroundColor: [
+                                '#00FF00',
+                                '#0000FF',
+                                '#FFFF00'
+                                ]
+                                }
+                                ]
+                                
+                            }
+                            }
+                        );
+                        var x0=0,x1=0,x2=0,x3=0,x4=0,x5=0,t0=0,t1=0,t2=0,t3=0,t4=0,t5=0,y1=0,y2=0,y3=0;       
+    const chatSocket = new WebSocket(`ws://${window.location.host}/ws/app/common`);
+    chatSocket.onopen = (event) => {
+  chatSocket.send("initiate");
+};
+    chatSocket.onmessage=function(e)
+        {
+                let data=JSON.parse(e.data);
+                console.log(data);
+                x0=x1;
+                x1=x2;
+                x2=x3;
+                x3=x4;
+                x4=x5;
+                t0=t1;
+                t1=t2;
+                t2=t3;
+                t3=t4;
+                t4=t5;
+
+                if (data.type == "ele")
+                {
+                x5=data["g01elevna"].value
+                console.log(data['time'])
+                t5=new Date(data['time']).toLocaleString();
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}status").innerHTML = "Running"
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}eleiav").innerHTML = Math.fround(data["g01eleiav"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}eles").innerHTML = Math.fround(data["g01eles"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}elef").innerHTML = Math.fround(data["g01elef"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}elepwt").innerHTML = Math.fround(data["g01elepwt"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}elevna").innerHTML = Math.fround(data["g01elevna"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}eleewh").innerHTML = Math.fround(data["g01eleewh"].value)
+                }
+                // document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}eleewh").innerHTML = data["g01eleiav"]
+                else if (data.type == "env")
+                {
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envtw").innerHTML = Math.fround(data["g01envtw"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envo2").innerHTML = Math.fround(data["g01envo2"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envh2s").innerHTML = Math.fround(data["g01envh2s"].value)
+                document.getElementById("{{ user.biogasmachineuser.Machines.MachineID }}envpo").innerHTML = Math.fround(data["g01envo"].value)
+                }
+                const labels3 = [];
+                data1=[x0,x1,x2,x3,x4,x5];
+                myChart3.data.datasets[0].data = data1;
+                myChart3.data.labels = [t0,t1,t2,t3,t4,t5]
+                myChart3.update();
+                try{
+                y1=data['g01eleia'].value;
+                y2=data['g01eleib'].value;
+                y3=data['g01eleic'].value
+                myChart4.data.datasets[0].data = [y1,y2,y3];
+                }
+
+                catch (error) {
+                console.log(error);
+                myChart4.data.datasets[0].data = [y1,y2,y3];
+                }
+                myChart4.update();
+                // sleep(500)
+                chatSocket.send('continue');
+        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+          <!-- Content col 1 -->
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
+
+{% block chartSourceJs %}
+    <script src="{% static '/js/personChart.js' %}"></script>
+{% endblock %}

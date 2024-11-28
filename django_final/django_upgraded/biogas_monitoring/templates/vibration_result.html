@@ -1,0 +1,93 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block mainContent %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.5.0/mqtt.min.js" integrity="sha512-jRy2TVmjNUHUFX+0ioDrGWOb1pRBtZclqSmHHzHlHE4jRew5jgIK+qWf1M/tYadC6yzY9MXAVxYLbR9WQZPsbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Control Options</h6>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        <a href="#" class="btn btn-danger btn-icon-split" id="check_button">
+            <span class="icon text-white-50">
+                <i class="fas fa-arrow-right" id="arrow"></i>
+            </span>
+            <span class="text" id="textcont">Check for result</span>
+        </a>
+        <div id="monitor">
+            <canvas id="barsintown"></canvas>
+        </div>
+    </div>
+
+    
+</div>
+<script type="text/javascript">
+    const check_result = document.getElementById("check_button");
+    const socket = new WebSocket(`ws://${window.location.host}/ws/vibration_result`+`/{{machine}}`)
+    check_result.addEventListener("click",(event)=>{
+        socket.send("get_result"); 
+    });
+    socket.addEventListener("message",(event)=>{
+        if(event.data=="no_result")
+        {
+            alert("No result yet, try again later");
+            return 0;
+        }
+        check_result.setAttribute("class","btn btn-success btn");
+        document.getElementById("textcont").textContent='';
+        document.getElementById("arrow").setAttribute("class","fas fa-arrow-down");
+        data= JSON.parse(event.data)
+        time_tick=data.time
+        datata=data.xAxis
+        console.log(datata);
+        myChart3= new Chart(
+            document.getElementById('barsintown'),
+            {
+            type: 'line',
+            options: {
+                animation: false,
+                plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: false
+                },
+                datalabels: { display: false, }
+
+                // scales:{
+                //     xAxes:[{display:false}]
+                // }
+                }
+            },
+            data: {
+                labels: time_tick,
+                datasets: [
+                {
+                    label: 'Voltage Phase A To Neutral',
+                    data: datata,
+                    borderColor: [
+                    'rgb(75, 90, 192)'
+                    ],
+                    backgroundColor: 'rgb(75, 90, 192)',
+                    borderWidth: 0.5,
+                    pointRadius:0,
+                    tension: 0.2
+                    
+                }
+                ]
+            }
+            }
+        );
+    })
+    
+    
+        
+</script>
+
+{% endblock %}

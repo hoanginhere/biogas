@@ -1,0 +1,70 @@
+{% extend 'index.html' %}
+{% load static %}
+
+{% block mainContent %}
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Bảng giám sát</h1>
+  </div>
+  <!-- End of Page Heading -->
+
+  {% for i in range((userList|length)//4 + 1) %}
+    <div class="row">
+      {% for user in userList[(i*4):(i*4+4)] %}
+        <div class="col-xl-3 col-md-4 mb-4">
+          <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+              <h1 class="h5 mb-0 text-gray-900 align-center">Máy {{ user.idMachine }}
+              </h1>
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <table class="table">
+                    <tbody>
+                                                 <!-- operation vsfb(Valve_speed)-->
+
+                      <tr>
+                        <td>
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Ngày:</div>
+                        </td>
+                        <td>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}daytb"></div>
+                        </td>
+                      </tr>
+                                                <!-- operation vsfb(Valve_speed)-->
+
+                      <tr>
+                        <td>
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thời gian bắt đầu:</div>
+                        </td>
+                        <td>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}timetb"></div>
+                        </td>
+                      </tr>
+                                              <!-- operation vsfb(Valve_speed)-->
+
+                      <tr>
+                        <td>
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Thời gian vận hành:</div>
+                        </td>
+                        <td>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800" id="{{ user.idMachine }}op"></div>
+                        </td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+
+                </div>
+              </div>
+              <a href="/admin/{{ user.idMachine }}">chi tiết</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+<!-- /.container-fluid -->
+{% endblock %}

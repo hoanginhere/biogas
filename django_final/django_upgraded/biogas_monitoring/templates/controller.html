@@ -1,0 +1,125 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block mainContent %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.5.0/mqtt.min.js" integrity="sha512-jRy2TVmjNUHUFX+0ioDrGWOb1pRBtZclqSmHHzHlHE4jRew5jgIK+qWf1M/tYadC6yzY9MXAVxYLbR9WQZPsbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Control Options</h6>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        {% if form_send %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label for="MachineID">MachineID of biogas generator to be controlled:</label>
+                {{ form_send.MachineID }}
+                <a href="#" class="btn btn-danger btn-icon-split" id="id_verify">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Check generator</span>
+                </a>
+                <br>
+                <label for="ControlSignal">Control Signal:</label>
+                {{ form_send.ControlSignal }}
+                <a href="#" class="btn btn-danger btn-icon-split" id="param_verify">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">Confirm</span>
+                </a>
+                <div id="placeholder">
+
+                </div>
+                <br>
+                <input type="submit" value="Submit" id="control_submit" disabled="true">
+                {{status}}
+            </form>
+        {% endif %}
+        <div id="monitor">
+        </div>
+    </div>
+
+    
+</div>
+<script type="text/javascript">
+    const control_speed=document.getElementById("control_submit");
+    const id_verify=document.getElementById("id_verify");
+    const control_signal=document.getElementById("param_verify");
+    var id_machine="";
+    id_verify.addEventListener("click",(event) => {
+        id_machine= document.getElementById("id_MachineID").value;
+        {% if user.biogasmachinemoderator.Active == True %}
+        {% for machines in user.biogasmachinemoderator.Machines.all %}
+        if (id_machine=="{{machines.MachineID}}")
+        {
+            // alert("True");
+            document.getElementById("id_verify").setAttribute("class","btn btn-success btn-icon-split"); 
+            return 0;
+        }
+        {% endfor %}
+        alert("You don't have this machine");
+        {% else %}
+        if (id_machine=="{{user.biogasmachineuser.Machines.MachineID}}")
+        {
+            // alert("True");
+            document.getElementById("id_verify").setAttribute("class","btn btn-success btn-icon-split"); 
+        }
+        else
+        {
+            alert("You don't have this machine")
+            document.getElementById("id_verify").setAttribute("class","btn btn-danger btn-icon-split");
+        }
+        {% endif %}
+    });
+    param_verify.addEventListener("click",(event) => {
+        control_param= document.getElementById("id_ControlSignal").value;
+        // if ((control_param=="POW") && (document.getElementById("placeholder").childElementCount <1))
+        if (control_param=="POW")
+        {
+            parent = document.getElementById("placeholder");
+            parent.textContent = '';
+            power_val = document.createElement("select");
+            power_val.id = "id_Param";
+            power_val.name = "Param";
+            parent.appendChild(power_val);
+            
+            option_1 = document.createElement("option");
+            option_1.value = 0;
+            option_1.text = "turn OFF";
+
+            option_2 = document.createElement("option");
+            option_2.value = 1;
+            option_2.text = "turn ON";
+
+            power_val.appendChild(option_1);
+            power_val.appendChild(option_2);
+        }
+        // else if ((control_param=="SPEED")&&(document.getElementById("placeholder").childElementCount <1))
+        else if (control_param=="SPEED")
+        {
+            parent = document.getElementById("placeholder");
+            parent.textContent = '';
+            power_val = document.createElement("input");
+            power_val.type = "number";
+            power_val.id = "id_Param";
+            power_val.name = "Param"
+            power_val.placeholder = "type speed in rpm";
+            parent.appendChild(power_val);
+        }
+        // alert(control_param);
+        document.getElementById("control_submit").disabled= false;
+        document.getElementById("param_verify").setAttribute("class","btn btn-success btn-icon-split")
+        // document.getElementById("param_verify").classList.remove("btn btn-danger btn-icon-split");
+        // document.getElementById("param_verify").classList.add("btn btn-success btn-icon-split"); 
+    });
+    
+        
+</script>
+
+{% endblock %}

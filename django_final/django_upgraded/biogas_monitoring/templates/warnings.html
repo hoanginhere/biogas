@@ -1,0 +1,90 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block mainContent %}
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <div class="col-lg-10">
+        <h6 class="m-0 font-weight-bold text-primary">Warnings</h6>
+        </div>
+        <div class="col-sm-2">
+            <a href="#" class="btn btn-danger btn-icon-split" id="delete-button">
+                <span class="icon text-white-50">
+                    <i class="fas fa-trash"></i>
+                </span>
+                <span class="text">Delete all</span>
+            </a>
+        </div>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body" id="warnings">
+
+    </div>
+            <script>
+                const chatSocket = new WebSocket(`ws://${window.location.host}/ws/noti`);
+            chatSocket.onopen = (event) => {
+            console.log("sent request for notifications");
+            };
+            chatSocket.onmessage=function(e)
+        {
+                if (e.data=="deleted")
+                {
+                    window.location.reload();
+                }
+                let data=JSON.parse(e.data);
+                // console.log(data);
+                size = Object.keys(data).length;
+                // console.log(size)
+                for (let k=0;k<size;k++)
+                {
+                    element_noti = document.getElementById("warnings");
+
+                    var element_1 = document.createElement("a");
+                    var element_1_1 = document.createElement("div");
+                    var element_1_1_1 = document.createElement("img");
+                    var element_1_2 = document.createElement("div");
+                    var element_1_2_1 = document.createElement("div");
+                    var element_1_2_2 = document.createElement("div");
+                    //Create Text Nodes
+                    var textNode_1_2_1_1 = document.createTextNode(data[k]["content"]);
+                    var textNode_1_2_2_1 = document.createTextNode(data[k]["type"]);
+                    //Set Attributes
+                    element_1.setAttribute("class","dropdown-item d-flex align-items-center");
+                    element_1.setAttribute("href","#");
+                    element_1_1.setAttribute("class","dropdown-list-image mr-3");
+                    element_1_1_1.setAttribute("style","width:32px;height:32px;")
+                    element_1_1_1.setAttribute("class","rounded-circle");
+                    element_1_1_1.setAttribute("src","{% static "img/ELE.png" %}");
+
+
+                    element_1_1_1.setAttribute("alt","...");
+                    element_1_2.setAttribute("class","font-weight-bold");
+                    element_1_2_1.setAttribute("class","text-truncate");
+                    element_1_2_2.setAttribute("class","small text-gray-500");
+                    //Append Children
+                    element_noti.appendChild(element_1);
+                    element_1.appendChild(element_1_1);
+                    element_1_1.appendChild(element_1_1_1);
+                    element_1.appendChild(element_1_2);
+                    element_1_2.appendChild(element_1_2_1);
+                    element_1_2_1.appendChild(textNode_1_2_1_1);
+                    element_1_2.appendChild(element_1_2_2);
+                    element_1_2_2.appendChild(textNode_1_2_2_1);
+
+                    var breakoff = document.createElement("br");
+                    element_noti.appendChild(breakoff);
+                }
+                // chatSocket.send('continue');
+        }
+        button=document.getElementById("delete-button");
+        button.addEventListener("click",function(e){
+            chatSocket.send("delete");
+        })
+            
+            
+
+            
+            </script>
+
+{% endblock %}

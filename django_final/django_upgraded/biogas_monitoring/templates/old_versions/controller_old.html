@@ -1,0 +1,99 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block mainContent %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.5.0/mqtt.min.js" integrity="sha512-jRy2TVmjNUHUFX+0ioDrGWOb1pRBtZclqSmHHzHlHE4jRew5jgIK+qWf1M/tYadC6yzY9MXAVxYLbR9WQZPsbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<div class="card shadow mb-4">
+    <!-- Card Header - Dropdown -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Control Options</h6>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+        <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+        <button type="button" class="btn btn-primary" id="control">Send control</button>    
+        <!-- <div id="control"><p>Send control</p></div> -->
+            
+            <canvas id="myAreaChart" width="1108" height="640" style="display: block; height: 320px; width: 554px;" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const socket = new WebSocket(`ws://${window.location.host}/ws/controller`);
+        let flag = 0;
+        document.getElementById("control").addEventListener("click",send_signal)
+        function send_signal()
+        {
+            socket.send("turn on");
+        }
+        socket.addEventListener("message", (event) => {
+        console.log("Message from server ", event.data);
+        if (event.data=="success")
+        {
+            const url = 'ws://broker.emqx.io:8083/mqtt'
+                // const url = 'mqtt://mqtt.eclipseprojects.io:1883'
+        /***
+            * Node.js
+            * This document explains how to use MQTT over TCP with both mqtt and mqtts protocols.
+            * EMQX's default port for mqtt connections is 1883, while for mqtts it is 8883.
+            */
+        // const url = 'mqtt://broker.emqx.io:1883'
+        // Create an MQTT client instance
+        const options = {
+        // Clean session
+        clean: true,
+        connectTimeout: 4000,
+        // Authentication
+        clientId: 'emqx_test',
+        // username: 'emqx_test',
+        // password: 'emqx_test',
+        }
+        const client  = mqtt.connect(url, options)
+        client.on('connect', function () {
+        console.log('Connected')
+        // Subscribe to a topic
+        client.subscribe('test', function (err) {
+            if (!err) {
+            // Publish a message to a topic
+            client.publish('test', 'Hello mqtt')
+            }
+        })
+        })
+
+        // Receive messages
+        client.on('message', function (topic, message) {
+        if (message == "failure")
+        {
+        // message is Buffer
+        console.log(message.toString())
+        // client.end()
+        }
+        else if (message=="success")
+        {
+            console.log(message.toString());
+            flag = 1;
+        }
+        client.end()
+        })
+        window.setTimeout(function(){
+            if (flag!=1)
+            {
+            console.log("failed to start")
+            client.end();
+            }
+        }, 10000);
+        }
+        });
+
+
+       
+
+
+    
+    </script>
+</div>
+
+{% endblock %}

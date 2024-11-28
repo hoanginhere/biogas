@@ -1,0 +1,287 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block mainContent %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.5.0/mqtt.min.js" integrity="sha512-jRy2TVmjNUHUFX+0ioDrGWOb1pRBtZclqSmHHzHlHE4jRew5jgIK+qWf1M/tYadC6yzY9MXAVxYLbR9WQZPsbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<div class="row no-gutters">
+    <div class="col">
+        <div class="card shadow mb-4 ml-2">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Control Options</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">                
+                {% if form_send %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <label for="MachineID">MachineID of biogas generator to be controlled:</label>
+                        {{ form_send.MachineID }}
+                        <a href="#" class="btn btn-danger btn-icon-split" id="id_verify">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <span class="text">Check generator</span>
+                        </a>
+                        <br>
+                        <label for="ControlSignal">Control Signal:</label>
+                        {{ form_send.ControlSignal }}
+                        <a href="#" class="btn btn-danger btn-icon-split" id="param_verify">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <span class="text">Confirm</span>
+                        </a>
+                        <div id="placeholder">
+
+                        </div>
+                        <br>
+                        <input type="submit" value="Submit" id="control_submit">
+                        {{status}}
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow mx-2">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Controlled Parameters</h6>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Power setpoint:</div></td>
+                            <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="status_sp">{{status_sp}}</div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Speed setpoint:</div></td>
+                            <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="speed_sp">Waiting</div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Status:</div></td>
+                            <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="status">Waiting</div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="text-ms font-weight-bold text-primary text-uppercase mb-1">Speed:</div></td>
+                            <td><div class="h5 mb-0 font-weight-bold text-gray-800" id="speed">Waiting</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row no-gutters">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-header">
+                Control result graph
+            </div>
+            <div class="card-body">
+                <canvas id="sp-var"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // const control_speed=document.getElementById("control_submit");
+    // var id_machine="{{ id }}";
+    let data_sp=[];
+    let data_date=[];
+    let data_rl=[]
+    let i=0;
+    const socket = new WebSocket(`ws://${window.location.host}/ws/control_status`)
+    const status = document.getElementById("status");
+    const speed = document.getElementById("speed");
+    // const status_sp = document.getElementById("status_sp");
+    const speed_sp = document.getElementById("speed_sp");
+    
+    myChart= new Chart(
+            document.getElementById('sp-var'),
+            {
+            type: 'line',
+            options: {
+                animation: false,
+                plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: false
+                },
+                datalabels: { display: false, }
+                },
+                scales: {
+                yAxes: [{
+                display: true,
+                ticks: {
+                // OR //
+                min:0,
+                max:1800
+            }
+        }]
+    }
+
+            },
+            data: {
+                labels: data_date,
+                datasets: [
+                {
+                    label: 'Speed setpoint',
+                    data: data_sp,
+                    borderColor: [
+                    'rgb(75, 90, 192)'
+                    ],
+                    backgroundColor: 'rgb(75, 90, 192)',
+                    borderWidth: 2,
+                    pointRadius:0,
+                    tension: 0.1
+                    
+                },
+                {
+                    label: 'Actual speed',
+                    data: data_rl,
+                    borderColor: [
+                    'rgb(255, 0, 192)'
+                    ],
+                    backgroundColor: 'rgb(255, 0, 192)',
+                    borderWidth: 2,
+                    pointRadius:0,
+                    tension: 0.1
+                    
+                }
+                ]
+            }
+            }
+        );
+
+    socket.addEventListener("message", (event) => {
+        
+        if(event.data=="initiate")
+        {
+            socket.send("{{user.biogasmachineuser.Machines.MachineID}}");
+            return 0;
+        }
+        data = JSON.parse(event.data);
+        if (i==0)
+        {
+            data_sp=[data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp,data.speed_sp];
+            // console.log(data_sp);
+        }
+        if (i>14)
+        {
+        data_rl[15]=data.speed;
+        data_date[15]=Date(data["time"] * 1000);
+            for (j=0;j<15;j++)
+        {
+            data_rl[j]=data_rl[j+1];
+            data_date[j]=data_date[j+1];
+        }
+        
+        }
+        else if (i<=14)
+        {
+            // console.log(data.speed);
+            data_date.push(Date(data["time"] * 1000));
+            data_rl.push(data.speed);
+            // console.log(data_rl);
+            // data_sp.push(data.speed_sp);
+        }
+        i+=1;
+
+        if (data.start_t>data.stop_t)
+        {
+            status.innerHTML="Running";
+        }
+        else if (data.start_t<=data.stop_t)
+        {
+            status.innerHTML="Stopped";
+        }
+        speed.innerHTML = data.speed.toFixed(2) + " rpm";
+        speed_sp.innerHTML = data.speed_sp.toFixed(2) + " rpm";
+        myChart.data.labels = data_date;
+        myChart.data.datasets[1]["data"]=data_rl;
+        myChart.data.datasets[0]["data"]=data_sp;
+        myChart.update();
+        socket.send("{{user.biogasmachineuser.Machines.MachineID}}");
+        
+    });
+    
+    const control_speed=document.getElementById("control_submit");
+    const id_verify=document.getElementById("id_verify");
+    const control_signal=document.getElementById("param_verify");
+    var id_machine="";
+    id_verify.addEventListener("click",(event) => {
+        id_machine= document.getElementById("id_MachineID").value;
+        {% if user.biogasmachinemoderator.Active == True %}
+        {% for machines in user.biogasmachinemoderator.Machines.all %}
+        if (id_machine=="{{machines.MachineID}}")
+        {
+            // alert("True");
+            document.getElementById("id_verify").setAttribute("class","btn btn-success btn-icon-split"); 
+            return 0;
+        }
+        {% endfor %}
+        alert("You don't have this machine");
+        {% else %}
+        if (id_machine=="{{user.biogasmachineuser.Machines.MachineID}}")
+        {
+            // alert("True");
+            document.getElementById("id_verify").setAttribute("class","btn btn-success btn-icon-split"); 
+        }
+        else
+        {
+            alert("You don't have this machine")
+            document.getElementById("id_verify").setAttribute("class","btn btn-danger btn-icon-split");
+        }
+        {% endif %}
+    });
+    param_verify.addEventListener("click",(event) => {
+        control_param= document.getElementById("id_ControlSignal").value;
+        // if ((control_param=="POW") && (document.getElementById("placeholder").childElementCount <1))
+        if (control_param=="POW")
+        {
+            parent = document.getElementById("placeholder");
+            parent.textContent = '';
+            power_val = document.createElement("select");
+            power_val.id = "id_Param";
+            power_val.name = "Param";
+            parent.appendChild(power_val);
+            
+            option_1 = document.createElement("option");
+            option_1.value = 0;
+            option_1.text = "turn OFF";
+
+            option_2 = document.createElement("option");
+            option_2.value = 1;
+            option_2.text = "turn ON";
+
+            power_val.appendChild(option_1);
+            power_val.appendChild(option_2);
+        }
+        // else if ((control_param=="SPEED")&&(document.getElementById("placeholder").childElementCount <1))
+        else if (control_param=="SPEED")
+        {
+            parent = document.getElementById("placeholder");
+            parent.textContent = '';
+            power_val = document.createElement("input");
+            power_val.type = "number";
+            power_val.id = "id_Param";
+            power_val.name = "Param"
+            power_val.placeholder = "type speed in rpm";
+            parent.appendChild(power_val);
+        }
+        // alert(control_param);
+        document.getElementById("control_submit").disabled= false;
+        document.getElementById("param_verify").setAttribute("class","btn btn-success btn-icon-split")
+        // document.getElementById("param_verify").classList.remove("btn btn-danger btn-icon-split");
+        // document.getElementById("param_verify").classList.add("btn btn-success btn-icon-split"); 
+    });
+</script>
+
+{% endblock %}

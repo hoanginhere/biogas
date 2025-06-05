@@ -1,0 +1,42 @@
+
+    
+{% extends 'index.html' %}
+{% load static %}
+
+{% block mainContent %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+<!-- Biogas Tank content -->
+      <div id="biogasTank" class="page-content" style="display: block;">
+
+        <!-- Parameters data -->
+        <div class="biogas-info">
+          <div class="biogas-info-card">
+            <h4>Humidity</h4>
+            <p id="humidityValue">0.00 %</p>
+          </div>
+          <div class="biogas-info-card">
+            <h4>Temperature</h4>
+            <p id="temperatureValue">0.0 °C</p>
+          </div>
+          <div class="biogas-info-card">
+            <h4>Pressure</h4>
+            <p id="pressureValue">0.00 bar</p>
+          </div>
+          <div class="biogas-info-card">
+            <h4>CH4</h4>
+            <p id="ch4Value">0.00 ppm</p>
+          </div>
+          <div class="biogas-info-card">
+            <h4>H2S</h4>
+            <p id="h2sValue">0.00 ppm</p>
+          </div>
+        </div>
+        <!-- Chart -->
+        <div class="biogas-chart">
+          <canvas id="parameterChart"></canvas>
+        </div>
+      </div>
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

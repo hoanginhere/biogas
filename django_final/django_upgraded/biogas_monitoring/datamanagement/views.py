@@ -172,6 +172,12 @@ def loadgraph(request):
     return render(request,"loadgraph.html")
 
 @login_required(login_url="/user/login/")
+def biogastank(request):
+    if request.method=="POST":
+        return render(request,"biogastank.html",{"status":"success","form_content":request.POST})
+    return render(request,"biogastank.html")
+
+@login_required(login_url="/user/login/")
 def interval(request):
     author = check_authority(request)
     if request.method=="POST":

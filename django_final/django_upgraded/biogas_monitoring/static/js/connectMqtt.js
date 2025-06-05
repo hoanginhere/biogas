@@ -32,6 +32,7 @@ function publish(location, typedata, time_begin, time_end) {
     "param_id":typedata,
     "time_begin":time_begin, 
     "time_end":time_end
+    
   };
   element = JSON.stringify(element);
   let message = new Paho.MQTT.Message(element);               //publish message
